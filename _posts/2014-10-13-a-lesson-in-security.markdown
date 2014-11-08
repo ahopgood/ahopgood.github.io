@@ -41,10 +41,10 @@ Oh, yeah, that would do it wouldn't it? So due to a lack of automated testing an
 * The tests themselves help document the system
 * They can be run automatically, no human intervention required, your human can be working on something else of value.
 
-In the meantime I have also introduced the [OWASP Dependency check maven plugin][OWASP Dep Checker] to our main project's parent `pom.xml` this can be run locally (warning it takes around 20-30 mins on first run for it to download the vulnerability database) and / or can be run as part of your maven site generation. This plugin will scan all your dependencies (aka libraries) and will attempt to match them up with known vulnerabilities in the [Network Information Security & Technology][NIST] Database from which the [CVE][CVE] database is derived. In this way you can also check your builds for vulnerabilities pre release, this combined with a decent set of automated tests should give you a reasonable amount of protection from unexpected changes brought about by updating libraries
+In the meantime I have also introduced the [OWASP Dependency check maven plugin][OWASP Dep Checker] to our main project's parent `pom.xml` this can be run locally (warning it takes around 20-30 mins on first run for it to download the vulnerability database) and / or can be run as part of your maven site generation. This plugin will scan all your dependencies (aka libraries) and will attempt to match them up with known vulnerabilities in the [Network Information Security & Technology][NIST] Vulnerability Database from which the [CVE][CVE] database is derived. In this way you can also check your builds for vulnerabilities pre release, this combined with a decent set of automated tests should give you a reasonable amount of protection from unexpected changes brought about by updating libraries
 
-[Owasp Dep Checker]: http://www.owasp.com/dependency-checker
-[NIST]:	http://www.nist.gov/
-[BDD]: 	httP;//www.wikipedia.co.uk/BDD
-[WSSE]: http://www.wikipedia.co.uk/
-[CVE]: 	http://www.cve.com/
+[Owasp Dep Checker]: https://www.owasp.org/index.php/OWASP_Dependency_Check
+[NIST]:	http://nvd.nist.gov/
+[BDD]: 	http://en.wikipedia.org/wiki/Behavior-driven_development
+[WSSE]: http://en.wikipedia.org/wiki/WS-Security
+[CVE]: 	https://cve.mitre.org/
