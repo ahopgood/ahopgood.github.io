@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "Startups"
+date:   2014-10-09
+categories: startups
+---
+I am a lead developer for a small London based startup.
+I like startups, I even attempted to found one myself straight out of university that sadly didn't go anywhere.
+They say that you learn more by failure than by success, it is never more true than with a startup. 
+
+I still believe though that there is a great role to be played by the larger technology firms. In the US and Canada it is fairly common practise to have an industrial placement (also known as an internship, except paid, take note fashion and newsprint industries) either over the summer break or as part of a sandwich year between two academic years.
+
+These placements hold great value to the academic computer science student / graduate and sadly seem to be either half heartedly pushed by faculties or don't have support from any nearby technology firms here in the UK.
+
+University is first and foremost about imparting, disseminating and acquiring knowledge, there tends to be little or no focus on real world or business application (at least seven years ago there wasn't). Working within an established company opens the eyes to a myriad of real world practical issues that a developer will need to solve that we had to figure out for ourselves whilst running the business:
+
+* How do I collaborate with multiple people on the same code base?
+* How do we keep track of test cases, results and bugs?
+* Which integrated development environment should we use?
+* How do we manage the libraries / dependencies our product relies on?
+* How do we manage building, versioning, packaging and distributing our software?
+* How do we continuously guarantee quality and a ready shippable product?
+* How do we manage workflow; technical debt, features and unplanned work?
+* Security, erm how much are we obliged to take seriously (answer as much as possible)?
+
+These experiences are poorly catered for in university courses (generally) and even if they were well catered for, academia tends to lag behind industry by quite a margin. Industry takes chances to apply solutions to problems that have yet to make their way to the academic domain. Don't get me wrong, this is a very different issue to the one of academic research, this is solely focused around productisation and real world software development. 
+
+So if anyone asks you if an industrial placement is a good idea for a software graduate, I'd say yes, I'd say emphatically yes if said graduate wants to compete for international jobs against US and Canadian graduates, otherwise you'll be on the back foot before you've even started. 
+
+
