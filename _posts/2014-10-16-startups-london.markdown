@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "London Start Ups"
+title:  "London Startups"
 date:   2014-10-16
 categories: London 
 ---
-London has had a simmering startup scene based around Old Street for some years now. With these startups now gaining national and international attention (see [last.fm][last.fm], [shazzam][shazzam] and [mind candy][mindcandy]) they are finding themselves inadvertently part of a problem that is now inhibiting new startups. With success, profits and great interest came government endorsement [link to guardian article][oldstreetwoes], surely a death knell for any cutting edge industry that thrives on attracting the young and the talented. The attempt to commoditise (and eventually monetise) the startup environment by business, government and the press is leading to a tick list of attributes that come with their own issues:
+London has had a simmering startup scene based around Old Street for some years now. With these startups now gaining national and international attention (see [last.fm][last.fm], [shazzam][shazzam] and [mind candy][mindcandy]) they are finding themselves inadvertently part of a problem that is now inhibiting new startups. With success, profits and great interest came [government endorsement][oldstreetwoes], surely a death knell for any cutting edge industry that thrives on attracting the young and the talented. The attempt to commoditise (and eventually monetise) the startup environment by business, government and the press is leading to a tick list of attributes that come with their own issues:
 
 * Based in or around Old Street? 
 	* Expensive rents
