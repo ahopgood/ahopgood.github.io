@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "A lesson in security testing"
+date:   2014-10-24
 categories: security ws-security testing cve
 ---
 Recently I was submitted a bug report for a web service and administration web pages that I created over a year and a half ago. This bug report stated that our service was completely accessible **without** authentication via a basic `http GET` request. 
