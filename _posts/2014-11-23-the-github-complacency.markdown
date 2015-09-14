@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "The Github Complacency"
+date: 2015-11-23
 categories: security aws github
 ---
 ![AWS Logo](/assets/aws_logo_small.png)  ![Github Logo](/assets/github_logo_small.jpg)

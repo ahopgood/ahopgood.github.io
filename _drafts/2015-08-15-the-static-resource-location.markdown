@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "The Static Resource Location"
+date: 2015-08-15
 categories: java dropwizard
 ---
 
