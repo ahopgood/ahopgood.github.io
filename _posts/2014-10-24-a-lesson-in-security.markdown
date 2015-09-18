@@ -10,7 +10,7 @@ Recently I was submitted a bug report for a web service and administration web p
 
 *"I definitely remember testing basic http access against the web service component"* I said.
  
-Now this was a standalone project that was only tangenitally related to our main project and was designed as a one off creation. For these reasons we only had unit test coverage, there was no higher level [Behavioural Driven Development][BDD] style tests for the web / web service layer. Instead we stuck with some manual testing, after all this was a small self contained project with few edge cases, this is easily testable by a human right? 
+Now this was a standalone project that was only tangenitally related to our main project and was designed as a one off creation. For these reasons we only had unit test coverage, there were no higher level [Behavioural Driven Development][BDD] style tests for the web / web service layer. Instead we stuck with some manual testing, after all this was a small self contained project with few edge cases, this is easily testable by a human right? 
 
 Right and wrong there.
 

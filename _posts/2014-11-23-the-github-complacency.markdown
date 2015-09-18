@@ -63,7 +63,7 @@ Shane had my account information from the form I submitted through the customer 
 
 After checking I had terminated  the instances on the account and that the offending key had been deleted, I was reassured about what the next stages would be; the account would be monitored for unauthorised use over 24 hours followed by a concession request for the billed unauthorised usage.
 
-One question that should have popped into your head by now is **why didn't I know of this account activity earlier?** Well it turns out that there is a setting for enabling email notifications but this setting is off by default, I have made sure that was not the case now.
+One question that should have popped into your head by now is **why didn't I know of this account activity earlier?** Well it turns out that there is a setting for enabling email notifications but this setting is off by default, I have made sure that is now not the case.
 
 ###The Do better###
 The following are things this experience taught me I should do better or bear in mind:
