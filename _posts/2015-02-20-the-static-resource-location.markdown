@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Static Resource Location"
-date: 2015-08-15
+date: 2015-02-20
 categories: java dropwizard
 ---
 
@@ -29,4 +29,10 @@ It turns out that the **AssetsBundle** allows for five constructors:
     	this.assetsName = assetsName;
 	}
 
-What none of this tells you is that the **AssetsBundle** will look for resources in the **/src/main/resources/** source folder and **anything** you add as a resource path with be appended to this location (and ergo will be found under this folder hierarchy).
+What none of this tells you is that the **AssetsBundle** will look for resources in the **/src/main/resources/** source folder and **anything** you add as a resource path will be appended to this location (and ergo will be found under this folder hierarchy) e.g. **mypages** will be found in **/src/main/resources/mypages/**
+
+There is a good lesson to be learned here, it can be easy to take for granted that code will either:  
+1. Have sufficient javadoc  
+2. Source code will be available  
+3. Source code will have sufficient code comments  
+4. Source code will be self documenting
