@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Security Pincer"
-date: 2015-09-13
+date: 2015-03-23
 categories: security java
 ---
 
