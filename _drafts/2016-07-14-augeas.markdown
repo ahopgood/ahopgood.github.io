@@ -22,7 +22,7 @@ This works for files that I have complete control over, yet there are other appl
 Enter Augeas...  
 
 ### Augeas
-[Augeas](http://augeas.net) is a tool to replace parts of a configuration file without creating an inflexible erb template. This allows a PHP module for example to declare a `php.ini` file and for another module to search and modify or add to the file later on as it sees fit.  
+[Augeas][augeas] is a tool to replace parts of a configuration file without creating an inflexible erb template. This allows a PHP module for example to declare a `php.ini` file and for another module to search and modify or add to the file later on as it sees fit.  
 This is a first class citizen in puppet's resource structure.  
 Augeas treats files as trees of values, a bit like xpath.  
 A typical puppet declaration of the augeas resource looks like this:  
@@ -41,7 +41,7 @@ Luckily the onlyif can also make use of augeas changes, e.g. `match dir[/ = '/fo
 This property is used to inform augeas of the location of the file it is to make changes to.  
 #### lens
 A lens is used by augeas to parse a particular file type.  
-A list of stock lenses can found [here](http://augeas.net/stock_lenses.html)  
+A list of stock lenses can found [here][lenses]  
 Lenses that have been confirmed to work with puppet:
 * `Xml.lns` is used by xml files
 * `Php.lns` is used by php files
@@ -103,7 +103,7 @@ Is encountered when augeas doesn't have permission to modify a file.
 Sensible use of Augeas should prevent overly large and verbose erb templates from becoming common place in your puppet code. The main thing hindering more widespread use of augeas is the rather sparse documentation, especially when it comes to the lenses, instead you tend to have to rely on loading up Augtool with the lens and a process of trial and error to see how the file gets parsed and modified.  
 
 
-
-
+[augeas]:	(http://augeas.net)
+[lenses]:	(http://augeas.net/stock_lenses.html) 
 
 
