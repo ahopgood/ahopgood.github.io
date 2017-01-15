@@ -6,7 +6,7 @@ categories: security aws github
 ---
 ![AWS Logo](/assets/aws_logo_small.png)  ![Github Logo](/assets/github_logo_small.jpg)
 
-###The problem###
+### The problem
 
 I received an email from Amazon web services (AWS) this morning informing me my account had been compromised.
 
@@ -30,7 +30,7 @@ This did not prepare me for the billing page, this indicated that they had been 
 
 For comparison my usual bill is $1.64 per month.
 
-###The Recovery###
+### The Recovery
 
 First things first, I quickly logged into github, deleted the offending file and made the repository private. Now if anyone wanted access to this project I would have to authorise it. I also added the file to the .gitignore file so it couldn't be absent mindedly committed again in future.
 
@@ -65,7 +65,7 @@ After checking I had terminated  the instances on the account and that the offen
 
 One question that should have popped into your head by now is **why didn't I know of this account activity earlier?** Well it turns out that there is a setting for enabling email notifications but this setting is off by default, I have made sure that is now not the case.
 
-###The Do better###
+### The Do better
 The following are things this experience taught me I should do better or bear in mind:
 
 * Don't ever commit unencrypted credentials to github.

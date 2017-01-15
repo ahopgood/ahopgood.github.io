@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Spring Classpath Resource wars"
-date: 2015-01-29
+date: 2015-09-29
 categories: java spring maven
 ---
 

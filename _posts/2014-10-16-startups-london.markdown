@@ -4,7 +4,7 @@ title:  "London Startups"
 date:   2014-10-16
 categories: London 
 ---
-London has had a simmering startup scene based around Old Street for some years now. With these startups now gaining national and international attention (see [last.fm][last.fm], [shazzam][shazzam] and [mind candy][mindcandy]) they are finding themselves inadvertently part of a problem that is now inhibiting new startups. With success, profits and great interest came [government endorsement][oldstreetwoes], surely a death knell for any cutting edge industry that thrives on attracting the young and the talented. The attempt to commoditise (and eventually monetise) the startup environment by business, government and the press is leading to a tick list of attributes that come with their own issues:
+London has had a simmering startup scene based around Old Street for some years now. With these startups now gaining national and international attention (see [last.fm][last.fm], [shazam][shazam] and [mind candy][mindcandy]) they are finding themselves inadvertently part of a problem that is now inhibiting new startups. With success, profits and great interest came [government endorsement][oldstreetwoes] and a new white elephant project for the [old street roundabout][oldstreetfunding], surely a death knell for any cutting edge industry that thrives on attracting the young and the talented. The attempt to commoditise (and eventually monetise) the startup environment by business, government and the press is leading to a tick list of attributes that come with their own issues:
 
 * Based in or around Old Street? 
 	* Expensive rents
@@ -18,7 +18,8 @@ London has had a simmering startup scene based around Old Street for some years 
 	* Creating a product called **Logger** that performs aggregate logging on the cloud?
 	* Then drop all the vowels, this is what all the cool kids do, and your name becomes **Lggr** 
 
-[shazzam]:			http://www.shazzam.co.uk
-[last.fm]:			http://lastfm.co.uk
-[mindcandy]:		http://www.mindcandy.co.uk
-[oldstreetwoes]:	https://www.theguardian.co.uk
+[shazam]:			https://www.shazam.com/
+[last.fm]:			http://last.fm
+[mindcandy]:		http://www.mindcandy.com
+[oldstreetwoes]:	https://www.gov.uk/government/speeches/east-end-tech-city-speech
+[oldstreetfunding]:	https://www.gov.uk/government/news/pm-announces-50m-funding-to-regenerate-old-street-roundabout

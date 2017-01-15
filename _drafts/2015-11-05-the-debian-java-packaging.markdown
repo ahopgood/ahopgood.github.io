@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Debian Java Packaging"
-date: 2015-01-29
+date: 2015-11-05
 categories: java debian linux
 ---
 

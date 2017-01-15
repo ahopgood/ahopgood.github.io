@@ -7,11 +7,10 @@ categories: VMs networking VirtualBox Vagrant
 I have found myself spending more time than I should configuring Vagrant networking with my Vagrant files and VirtualBox over the past year and figured it was about time to put some of this knowledge down somewhere.
 
 ## Public Networking
-[Public networking][public-networking] allows your vagrant machines to be allocated IP addresses as if they were physical devices on your network; `config.vm.network "public_network"`.
-You can attempt to manually set the IP address yourself `config.vm.network "public_network", ip: "192.168.0.17"`.
+[Public networking][public-networking] allows your vagrant machines to be allocated IP addresses as if they were physical devices on your network: `config.vm.network "public_network"`, you also can attempt to manually set the IP address yourself `config.vm.network "public_network", ip: "192.168.0.17"`.
 ### Pros
 * Your VMs are available to the wider network making for easy access to development stacks
-* IP allocation if using defaults will be handled for you
+* IP allocation if using the defaults will be handled for you, no hassle
 
 ### Cons
 * Uses up IP allocation on your network via DHCP
@@ -29,6 +28,7 @@ If you want external access on a port then port forwarding is required: `config.
 * As they are on the same subnet inter-VM communication just works
 * No DHCP IP allocation issues on the wider network
 * No external systems can access your VM over the network
+
 ### Cons
 * IP Address clashes - if **you** don't keep track of addresses you've allocated and the machines you're running then your chances of getting an IP address clash go up.
 * Lack of external access
@@ -39,6 +39,7 @@ Technically this is a subset of public networking but has proven to be more usef
 
 An example of a Linux / Mac OS bridge:  
 `config.vm.network "public_network", :mac => "080027D3418E, :bridge => "en1: Wi-Fi (AirPort)"`
+
 An example of a Windows bridge:  
 `config.vm.network "public_network", :mac => "080027D3418E", :bridge => "Realtek PCIe GBE Family Controller"`
 
@@ -53,6 +54,9 @@ Now in my router settings I can configure a static IP based on MAC address (and 
 ### Cons
 * There is very little documentation around about using bridged adapters, support varies across VM providers as well it seems.
 * Not portable across physical machines or OS's as they will have different named networking adapters 
+
+## Aside
+I'm currently making use of all the above vagrant networking styles as each has a strength and weakness. Typically for services I'm hosting on a small Dell server I'll allocate an IP address to MAC addresses for each VM, I then maintain a little network diagram so I'm aware of the MACs and IPs I'm using. For writing puppet modules I tend to stick with private networking and for proof reading and viewing layout of this blog I'll do a private network with an allocated ip. 
 
 
 [private-networking]: 	https://www.vagrantup.com/docs/networking/private_network.html

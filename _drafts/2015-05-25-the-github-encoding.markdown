@@ -5,7 +5,19 @@ date: 2015-05-25
 categories: version control github windows linux
 ---
 Currently I have a Windows based host that runs linux based vagrant VMs to test puppet modules I write.  
-Recently after checking out and firing up the VM for my tomcat module on a newly formatted Windows host, one of the shell scripts failed to run. 
+Recently after checking out the project from git and firing up the VM for my tomcat module on a newly formatted Windows host, one of the shell scripts failed to run. 
+
+Error Type
+
+Both operating systems use different methods for the end of a line.
+Windows uses Carriage Return (CR) + Line Feed (LF)
+Linux used Line Feed (LF)
+
+Quickly running [dos2unix][dos2unix] app on the files or saving them with Notepad++ via `edit` > `EOL Conversion` > `UNIX  Format` will fix this.
+
+Rerunning the bash script shows the problem is solved.
+
+Unfortunately this will happen again on
 
 Linux file on VM -> windows Host -> github  
 A linux script is created in a linux VM, the file is committed to github via the Windows host this results in a file that is converted into the LF line ending.  
@@ -25,6 +37,7 @@ Per project setting of core.autocrlf should be set to false to ensure that
 
 
 https://stackoverflow.com/questions/5834014/lf-will-be-replaced-by-crlf-in-git-what-is-that-and-is-it-important
+
 
 
 
