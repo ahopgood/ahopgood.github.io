@@ -10,7 +10,7 @@ I believe these are fair charges, Java was designed long before web 2.0 or the a
 
 One thing that Java did manage though was widespread adoption amongst university faculties, businesses of all sizes and in the open source community, this was mostly due to Sun and IBM's backing early on and the advent of the OpenJDK with the open sourcing of a majority of Sun's Java Virtual Machine (JVM) and Java Development Kit (JDK).
 
-With this adoption came libraries, lots of libraries, the [apache foundation][apache] is the guardian of many of the most widely used and popular Java projects; Tomcat Application Server, httpd web server, AXIS (a SOAP web services package) and commons utilities to name a few. As time progressed many libraries and frameworks emerged (see the hugely popular [spring][spring]framework) to solve problems or use cases that Java as a language could not, these were produced by this vibrant community of companies and enthusiasts. 
+With this adoption came libraries, lots of libraries, the [apache foundation][apache] is the guardian of many of the most widely used and popular Java projects; Tomcat Application Server, httpd web server, AXIS (a SOAP web services package) and commons utilities to name a few. As time progressed many libraries and frameworks emerged (see the hugely popular [spring][spring] framework) to solve problems or use cases that Java as a language could not, these were produced by this vibrant community of companies and enthusiasts. 
 
 In this post I will run through a few tools I use to help generate a maven site full of information about the quality of my code, test coverage and history.
 
@@ -30,15 +30,15 @@ Surefire - unit test runner, generates useful reports. I get suspicious when I s
 * [project info reports][projectinfo] presents a one stop place for information on your project; where your issue tracker is, who works on your project, what your source control information is (branch, tag, trunk etc), dependency convergence, distribution management (e.g. maven central, artifactory, snapshot and release version locations etc) and 
 dependencies being used.
 
-[jscountdown]:			http://www.isaachansky.me/days-since-last-new-js-framework/
+[jscountdown]:			http://www.isaacchansky.me/days-since-last-new-js-framework/
 [apache]:				http://www.apache.org
 [spring]:				http://www.spring.io
 
 [depcheck]:				https://www.owasp.org/index.php/OWASP_Dependency_Check
 [cobertura]:			https://cobertura.github.io/cobertura/
-[findbugs]:				https://findbugs.sourceforge.net/
+[findbugs]:				http://findbugs.sourceforge.net/
 [pmd]:					https://pmd.github.io/
-[checkstyle]:			https://checkstyle.sourceforge.net/
+[checkstyle]:			http://checkstyle.sourceforge.net/
 [changelog]:			https://maven.apache.org/plugins/maven-changelog-plugin/
 [surefire]:				https://maven.apache.org/surefire/maven-surefire-report-plugin/
 [projectinfo]:			https://maven.apache.org/plugins/maven-project-info-reports-plugin/
