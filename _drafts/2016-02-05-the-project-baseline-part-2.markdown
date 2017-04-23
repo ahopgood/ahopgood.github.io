@@ -4,7 +4,7 @@ title:  "The project baseline part II"
 date: 2016-02-05
 categories: java project-management
 ---
-In an [earlier post](../2015-08-15-the-project-baseline.html) I started laying out the maven site plugins I make use of on projects to aid with quality and .
+In an [earlier post](../../../2015/08/15/the-project-baseline.html) I started laying out the maven site plugins I make use of on projects to aid with quality and .
 
 In this post I'll cover frameworks and libraries that I find incredibly useful when creating a Java project with maven; either as a big project or a hobby. I incorporate these into a maven archetype project so that I have a source of preconfigured tools, frameworks and libraries at project start.
 
