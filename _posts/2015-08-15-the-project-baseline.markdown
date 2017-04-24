@@ -16,6 +16,8 @@ In this post I will run through a few tools I use to help generate a maven site 
 
 In a later post I'll cover frameworks and libraries.
 
+Part 2 can be found [here](../../../2016/02/05/the-project-baseline-part-2.html)
+
 ## Maven site generation
 Maven site generation is a great part of the maven lifecycle that enables a site to be generated for your project, it is useful for hosting all sorts of facts and information about your project gleaned through the build lifecycle.
 * [Dependency check][depcheck] - OWASP plugin, include link
