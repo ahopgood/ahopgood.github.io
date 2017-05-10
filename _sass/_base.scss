@@ -45,7 +45,11 @@ img {
     vertical-align: middle;
 }
 
-
+//Custom rule
+img.padded-fixed-width-image{ 
+	padding: 10px;
+	max-width: 200px
+}
 
 /**
  * Figures
