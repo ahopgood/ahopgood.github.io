@@ -14,9 +14,20 @@ categories: apache html css javascript
 ### How does it do it?
 
 ## Sub Resource Integrity - SRI
-[SRI][SRI]
 ### What does it do?
+[SRI][SRI] allows a web page to specify an *expected* hash for externally hosted resources that the page uses, such as stylesheets and JavaScript files hosted on a Content Delivery Network (CDN).  
+By specifying the hash for an expected file any tampering of the file can be detected.
 ### How does it do it?
+The browser is responsible for calculating the hash of the delivered file.  
+Difference hashing strategies can be specified by the web page, currently only the following are allowed in the W3 spec:
+* sha256
+* sha384
+* sha512  
+
+### Caveats
+* Requires browser support, see [caniuse.com](https://caniuse.com/#feat=subresource-integrity) or to [test your browser](http://w3c-test.org/subresource-integrity/subresource-integrity.sub.html).  
+* Requires the end user to calculate the hash, if they do this incorrectly or enter a malformed hash their resource won't load. An [online hash generator](https://www.srihash.org/) can be used instead.
+* Only applies to `<script>` and `<link>` tags currently (i.e. stylesheets and JavaScript)
 
 ## Content Security Policy - CSP
 [CSP][CSP]
