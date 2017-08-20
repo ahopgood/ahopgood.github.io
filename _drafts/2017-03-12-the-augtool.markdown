@@ -4,11 +4,9 @@ title:  "The Augtool"
 date: 2017-03-12
 categories: augeas augtool linux
 ---
-
-**TO DO** Add backlink to [/augeas/augtool/linux/2016/07/14/augeas.html](/augeas/augtool/linux/2016/07/14/augeas.html) post
 ![augeas logo](/assets/augeas-logo.png){: .padded-fixed-width-image }
 
-In a previous post on [auges in puppet](/augeas/augtool/linux/2016/07/14/augeas.html) I mentioned I'd be writing another post on debugging with the command line augeas tool since the puppet augeas provider doesn't provide the clearest way of debugging. 
+In a previous post on [augeas in puppet](/augeas/puppet/linux/2016/07/14/augeas.html) I mentioned I'd be writing another post on debugging with the command line augeas tool since the puppet augeas provider doesn't provide the clearest way of debugging. 
 Puppet with augeas requires the `--debug` flag to be set for it to print out the statements it is running via augeas but by the time you've got an error in your manifest run, the issue might not be replicable; such as a malformed insertion meaning an onlyif check failing and allowing other statements to run.  
 Using the command line tooling will enable you to get your syntax correct without flushing the changes to disk (`save`) or having to run your puppet manifest every time you try to construct a `match` query for example, it makes for a much quicker process.
 

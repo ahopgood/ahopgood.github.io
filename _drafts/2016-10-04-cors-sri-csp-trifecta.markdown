@@ -24,6 +24,14 @@ Difference hashing strategies can be specified by the web page, currently only t
 * sha384
 * sha512  
 
+An example of a sha384 integrity check on jQuery:
+```
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" 
+	integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" 
+	crossorigin="anonymous">
+</script>
+```
+
 ### Caveats
 * Requires browser support, see [caniuse.com](https://caniuse.com/#feat=subresource-integrity) or to [test your browser](http://w3c-test.org/subresource-integrity/subresource-integrity.sub.html).  
 * Requires the end user to calculate the hash, if they do this incorrectly or enter a malformed hash their resource won't load. An [online hash generator](https://www.srihash.org/) can be used instead.
@@ -48,7 +56,7 @@ The useful site [content-security-policy][CSP Values] provides a great breakdown
 [SRI]:			https://en.wikipedia.org/wiki/Subresource_Integrity
 [CSP]:			https://en.wikipedia.org/wiki/Content_Security_Policy
 [CSP Values]:	https://content-security-policy.com/
-
+[CSP fallback]:	http://www.debug.is/2015/10/18/fallback-for-cdn-provided-js-when-using-csp/
 
 
 

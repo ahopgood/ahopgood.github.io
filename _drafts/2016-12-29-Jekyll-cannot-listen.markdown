@@ -11,7 +11,7 @@ One problem with writing in markdown and then pushing to github pages to view yo
 
 [Jekyll][Jekyll] has a nifty feature where you can spin up an instance of Jekyll within its own web server and have it host your blog locally on port 4000.
 
-`jekyll serve -s ${blog_source_directory} -d ${blog_output_directory} --watch --drafts --force_polling &`
+`jekyll serve -s blog_source_directory -d blog_output_directory --watch --drafts --force_polling &`
 
 * **-s blog_source_directory** is the blog source directory that Jekyll will compile content from.
 * **-d blog_output_directory** is the destination directory you wish compiled static content to be sent to, this is the directory that the blog will be served from.

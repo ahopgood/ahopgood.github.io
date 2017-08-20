@@ -37,7 +37,8 @@ augeas{ "configure-jekins-login":
 }
 ```
 It should be noted that when using Augeas with puppet in most cases it will tend to fail silently, passing the `--debug` switch to puppet will give you more visibility as to what puppet is trying to apply via augeas.
-<!--see [Debugging with Augtool][debug].-->  
+See a future post on [the augtool][debug] for more information on debugging with the command line tool for greater control and visibility.
+
 Another gotcha is that it will make these same changes everytime puppet is run so using an `onlyif => ` clause is advisable with a `match` statement.  
 Luckily the onlyif can also make use of augeas [changes][changes], e.g. `match dir[/ = '/foo'] size == 0` or **even better** you can make use of the `context` argument to ensure you don't create duplicates, as per the example above where the `hudson` prefix is being used in the context field to ensure the change we want to make is fully qualified.
 
@@ -90,7 +91,8 @@ This is due to having to escape puppet's string syntax and then adjusting for th
 [augeas]:					http://augeas.net
 [xpath]:					https://github.com/hercules-team/augeas/wiki/Path-expressions
 [lenses]:					http://augeas.net/stock_lenses.html 
-[Debugging with Augtool]:	#debug
+[debug]:					/augeas/augtool/linux/2017/03/12/the-augtool.html
+[changes]:					https://docs.puppet.com/puppet/5.0/resources_augeas.html#a-better-way
 
 
 
