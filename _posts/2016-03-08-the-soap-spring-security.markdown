@@ -29,7 +29,7 @@ In this way you can have your user credentials backed up by any type of data sto
 ### How WS-Security is implemented via [CXF][CXF]
 [WS-Security][SOAP-Security] is an addition to the SOAP spec that allows for authentication to be added to SOAP requests without delegating security to the underlying transport (HTTPS) since multiple transport bindings can be used with SOAP.
 WS-Security in CXF involves use of a WSS4JInterceptor to specify the authentication type, in our case a `UsernameToken` strategy/action and specifying the `PasswordText` for the passwordType implying we expect a username token with a text representing the password.
-[UsernameToken Authentication][sernameToken Authentication]
+[UsernameToken Authentication][UsernameToken Authentication]
 
 ```
 <bean id="myPasswordCallback"
@@ -88,7 +88,7 @@ Instead of using the PasswordCallback which in the background uses the built in 
 
 This class has the `@Required` annotation on the field for the AuthenticationManager - which is the implementation of the main Spring Security mechanism.  
 The username and password from the CXF `UsernameToken` are extracted and then are used to create a Spring Security `UsernamePasswordAuthenticationToken`.  
-This token is then passed into the Spring AuthenticationManager (the `authManager` field in the below code) for authentication.  
+This token is then passed into the Spring [AuthenticationManager][AuthenticationManager] (the `authManager` field in the below code) for authentication.  
 In the below example we are verifying that the user's role is that of a web service consumer `WS_CONSUMER` and setting a `granted` boolean to true if we get a match.  
 If we don't get authentication then there are no `GrantedAuthority` objects returned and we leave the `granted` boolean set to false.  
 If the `granted` boolean is false after looping through our `GrantedAuthority` set then we throw a `InsufficientAuthenticationException`.  
@@ -122,13 +122,13 @@ protected void verifyPlaintextPassword(UsernameToken usernameToken, RequestData 
 }
 ```
 
-By using the Spring Security AuthenticationManager we are able to use of the Hibernate backed storage from Spring to retreive the user credentials, obtain the salt value and hash the provided plaintext password in the same way that Spring does but using CXF.
+By using the Spring Security AuthenticationManager we are able to make use of the Hibernate backed storage from Spring to retrieve the user credentials, obtain the salt value and hash the provided plaintext password in the same way that Spring does but using CXF.
 
 In this way we aren't duplicating logic for both frameworks and can use the same credential store across both the web interface and the web service. 
 
 
-[CXF]:              https://cxf.apache.org/docs/ws-security.html
-[SOAP-Security]:	https://en.wikipedia.org/wiki/WS-Security
-[Spring-Security]:  https://projects.spring.io/spring-security/
-[AuthProvider]:     https://
-[sernameToken Authentication]:https://cxf.apache.org/docs/ws-security.html#WS-Security-UsernameTokenAuthentication
+[CXF]:              			https://cxf.apache.org/docs/ws-security.html
+[SOAP-Security]:				https://en.wikipedia.org/wiki/WS-Security
+[Spring-Security]:  			https://projects.spring.io/spring-security/
+[AuthenticationManager]:     	https://docs.spring.io/spring-security/site/docs/3.0.x/reference/core-services.html
+[UsernameToken Authentication]:	https://cxf.apache.org/docs/ws-security.html#WS-Security-UsernameTokenAuthentication
