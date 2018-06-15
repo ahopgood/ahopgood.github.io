@@ -30,5 +30,20 @@ Below I've detailed some framework specific annotations and their javax counterp
 |@Identifier|||
 ||||
 
+The [JSR-339](#JSR-339) spec also known as the Java API for RESTful Web Services provides annotations that are portable between the Spring framework and the Jersey/Dropwizard framework.
+|Spring Parameter|JSR-339|What they do|
+|@RequestMapping|@Path||
+|@RequestMapping(method=GET)|@GET||
+|@RequestMapping(method=PUT)|@PUT||
+|@RequestMapping(method=POST)|@POST||
+|@RequestMapping(method=DELETE)|@DELETE||
+||@HEAD||
+||@Produces||
+||@Consumes||
+|@RequestParam|@QueryParam|Allow the method parameter to be used in a GET request as a parameter, allows for optional name mapping ("") so the method parameter can be named differently to the query parameter|
+||@PathParam||
+
+
 [JSR-330]:	https://github.com/javax-inject/javax-inject
 [JSR-317]:	https://docs.oracle.com/javaee/7/api/javax/persistence/package-summary.html
+[JSR-339]:	https://jcp.org/en/jsr/detail?id=339
