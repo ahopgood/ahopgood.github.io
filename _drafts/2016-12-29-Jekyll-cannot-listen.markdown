@@ -38,6 +38,9 @@ It seems that there is a clash between the `sass-listen` and the `listen` gems, 
 ### The solution
 I then spent hours trying to find a way I could puppetise the installation of Ruby such that I can specify the version to use, this is complicated by the fact that the version of Ubuntu I am using (wily, 15.10) only has Ruby 2.2.3 available in the package manager repositories. If you're trying to find a way to replace the package manager provided Ruby version I'd advise you don't; the pain isn't worth it, I'm probably missing something here but I'm not a Ruby developer so instead I found a [kludge][kludge].
 
+> informal 
+> 1. An ill-assorted collection of parts assembled to fulfil a particular purpose.
+
 Make use of the `--force` parameter when installing the `sass-listen` provider and things seem to all install without issue, I even went overboard and added it to the Jekyll gem itself, overkill but hey so far I haven't seen any side effects and I'm able to preview my blog posts ahead of time! 
 
 [github pages]:		https://pages.github.com/

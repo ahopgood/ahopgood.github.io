@@ -8,7 +8,7 @@ categories: Java
 * [How to create an annotation](#creating)
 * [Annotating with our new annotation](#annotating)
 * [Processing our annotation](#processing)
-* 
+
 Java annotations are very versatile and allow plain old Java objects (POJOs) to be enriched with useful meta-data that can change or add behaviour without requiring you to add logic to your POJOs.  
 Until recently I've made do with using annotations provided by the JDK (e.g. @Inject) or by frameworks such as Spring (e.g. @Autowired) so haven't needed to create my own before.  
 Usually in work the [type-safe config][type-safe-config] library and Spring Boot both provide functionality for populating properties from numerous sources such as .conf and .properties files, the Java System Properties or Environmental Variables but it occurred to me that as an exercise I could write my own annotation to populate fields from Java System Properties. 

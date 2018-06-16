@@ -22,7 +22,7 @@ In order to allow switching between major versions of Java on the same OS I make
 
 The module on CentOS will install the specified version (either major or update version) and then use a call to query rpm for other installed versions. If we've specified that major versions are allowed multi tenancy then this will just remove update versions, if we only allow one major version then this will remove all major and update versions.
 
-Whilst running tests on my module I noticed a very specific failure; essentially upgrading to Java 8 from Java 6 and then downgrading back to Java 6 would result in failures of the alternatives values being set as the defaults when downgrading. The flow was as follows:
+Whilst running tests on my module I noticed a very specific failure; essentially upgrading to Java 8 from Java 6 and then downgrading back to Java 6 would result in the alternatives values not changing when downgrading. The flow was as follows:
 >Java 6u45 -> Java 8u112 -> Java 6u45
 
 Interestingly it didn't happen in scenarios where we start with Java 8 and then downgrade to Java 6, you need to have upgraded first for the downgrade to fail.
@@ -47,15 +47,15 @@ Error: alternatives --set unpack200 /usr/java/jdk1.6.0_45/jre/bin/unpack200 retu
 Error: alternatives --set javaws /usr/java/jdk1.6.0_45/jre/bin/javaws returned 2 instead of one of [0]
 Error: alternatives --set rmiregistry /usr/java/jdk1.6.0_45/jre/bin/rmiregistry returned 2 instead of one of [0]
 ```
-When running puppet in --debug mode the install calls to alternatives seemed to be passing with a zero status showing success.
+When running puppet in `--debug` mode the install calls to alternatives seemed to be passing with a zero status showing success.
 ```
 Debug: Executing 'alternatives --install /usr/bin/orbd orbd /usr/java/jdk1.6.0_45/jre/bin/orbd 306 --slave /usr/bin/orbd.1.gz orbd.1.gz /usr/java/jdk1.6.0_45/man/man1/orbd.1.gz '
 
 Notice: /Stage[main]/Main/Java[java-6]/Java::Default::Install[install-default-to-java-6]/Alternatives::Install[java-6-orbd]/Exec[java-6-orbd-install-alternative]/returns: executed successfully
 ```
 ### Proof of install failure
-Trying to work out the current state of alternatives I decided to query alternatives itself and viewing the linking files in /etc/alternatives.
-The output of alternatives `alternatives --display orbd` returned:
+Trying to work out the current state of alternatives I decided to query alternatives itself and viewing the linking files in /etc/alternatives.  
+Focussing on the orbd command the output of `alternatives --display orbd` returned:
 ```
 $ alternatives --display orbd
 failed to read link /usr/bin/orbd: No such file or directory
@@ -77,9 +77,9 @@ Removing this entry as suggested in the google search allowed the install to pro
 
 ### Java 8 update 31 vs update 112
 I was able to replicate the same experience between two versions of Java 8; update version 31 **didn't** have any issues installing on its own, upgrading to update version 112 also **didn't** exhibit any issues. However downgrading **back** to update version 31 **failed** to set the alternatives (and install them as discovered previously).
-I concluded that based on these observations that Java 8 after a certain version is somehow making use of alternatives, this is difficult to test and peg to a paricular update version as there are nearly a eighty updates between my testing versions.
+I concluded that based on these observations that Java 8 after a certain version is somehow making use of alternatives, this is difficult to test and peg to a paricular update version as there are nearly eighty updates between my testing versions.
 
-In order to prove that alternatives entries were being manipulated by certain update version of Java 8 I went through a manual .rpm install of Java 8u112.
+In order to prove that alternatives entries were being manipulated by a certain update version of Java 8 I went through a manual .rpm install of Java 8u112.
 After which I queried the output of `alternatives --display java`
 Interestingly Java 8uxxx post 31 (based on anecdotal experience) indeed now installs to alternatives:
 ```
@@ -118,9 +118,8 @@ Note that they are slaving all of the /jre/bin executables which match the insta
 When my puppet module installed a value into alternatives for each binary in `/jre/bin` individually it would break as Java 8uxxx would remove this entry but leave in place our manual java 8 entries and leave behind orphaned stubs.
 
 I found an Oracle page explaining that Java 8u40 onwards now uses alternatives, turns out it commenced from update version 40 according to the [linux install notes from Oracle][linux install notes from Oracle]:   
-```
-Starting with version 8u40, the JDK installation is integrated with the alternatives framework and after installation, the alternatives framework is updated to reflect the binaries from the recently installed JDK. Java commands such as java, javac, javadoc, and javap can be invoked from the command line.
-```
+> Starting with version 8u40, the JDK installation is integrated with the alternatives framework and after installation, the alternatives framework is updated to reflect the binaries from > the recently installed JDK. Java commands such as java, javac, javadoc, and javap can be invoked from the command line.
+
 ### How to fix
 There are two solutions to this issue:
 1. Manually remove the `/var/lib/alternatives` stubs after uninstalling Java 8uXXX where XXX>39
