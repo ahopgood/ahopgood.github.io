@@ -34,12 +34,19 @@ Now you're ready to query your file contents:
 
 Augtool (and the augeas resource by proxy) has a number of **operations** you can perform on a file:
 * `set path/in/file value` set a value for the specified entry
-* `set path/in/file[last()+1] value` will create a new entry after the last in the list of  entries with a new value.
 * `rm path/in/file` will remove the entry
 * `clear path/in/file` will remove any sub entries or attributes from the entry, best used before remove a bit like doing `rm dir/*` before `rmdir dir`
 Note these operations can have different value syntax based on the lens used.
-* `ins`
-* `match /files/etc/httpd/conf/httpd.conf/directive[. = 'LoadModule']/arg[. = 'headers_module'] size == 0`
+* `ins path/in/file value` will create an entirely new entry, a bit like `set` but will fail if an entry already exists, whereas set will overwrite
+* `match path/in/file/arg size == 0` can be used for conditional execution (using puppet's `onlyif`) in this example we are checking if the arguments of the file leaf are of size 0.
+
+When performing any of the operations above you can also use a rich assortment of [path expressions][expressions]:
+* `set path/in/file[last()+1] value` the built in function last() can be used within square brackets to handle positional path manipulation in this example to insert a new entry after the last one. 
+* `path/in/file[. = 'value']` will match on a path where the current entry (denoted by the period) matches the specified string.
+* `path/in[file = 'value']` is equivalent to the above example except we're matching from the perspective of the `in` node and examining if the child `file` matches with the `value`
+* `and` and `or` can be used to match multiple predicates 
+* Ordering of predicate evaluation is important `/files/etc/services/service-name[port = '22'][last()]` will find the last service with a port of 22 whereas `/files/etc/services/service-name[last()][port = '22']` will match if the last service out of **all** services has a port of 22. 
+* There are many more to play around with as detailed in [path expressions][expressions] such as **self**, **child**, **parent**.
 
 Flush your changes to disk:  
 `save`  
@@ -59,3 +66,4 @@ Sensible use of Augeas should prevent overly large and verbose `.erb` templates 
 
 [augeas]:	http://augeas.net
 [lenses]:	http://augeas.net/stock_lenses.html   
+[expressions]: https://github.com/hercules-team/augeas/wiki/Path-expressions
