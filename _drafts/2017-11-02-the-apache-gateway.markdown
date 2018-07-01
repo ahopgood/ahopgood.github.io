@@ -1,12 +1,12 @@
 ---
 layout: post
 title:  "Setting up Apache as a local gateway"
-date: 2017-09-25
+date: 2017-11-02
 categories: Apache Gateway
 ---
 
 ## The issue
-I have a few virtual machines on a local server at home that provide a few services, they are all on my local network but I'm not quite ready to setup my own [BIND](#BIND) server to provide Domain Name System (DNS) as I feel that is probably a bit heavy handed for now.  
+I have a few virtual machines on a local server at home that provide a few services, they are all on my local network but I'm not quite ready to set up my own [BIND][BIND] server to provide Domain Name System (DNS) lookup as I feel that is probably a bit heavy handed for now.  
 This still leaves me with a bunch of servers/services which can only be referenced by IP address and port combos which are hard to remember, especially since they can change from time to time.  
 My initial hacky solution to this was to maintain a `/etc/hosts` file mapping host names to specific IP addresses but this had a few downsides:
 1. Ports cannot be mapped in a hosts file, many of my services operate on ports that aren't limited to `80` so this forward would be incomplete
@@ -31,23 +31,23 @@ Below is an example of virtual host entry (in `/etc/apache/sites-available/www.m
 </VirtualHost>
 
 ```
-The `ProxyPreserveHost On` will ensure that the hostname we use will be passed to the service (see [ProxyPreserveHost](#proxypreservehost).  
-The `ProxyPass` directive will handle mapping of incoming requests to the destination server: `public.com/foo` to `backend.com/foo` (see [ProxyPass](#proxypass)).
-The `ProxyPassReverse` directive handles mapping of response requests from the destination server back to the origin server, `backend.com/bar` becomes `public.com/bar` (see [ProxyPassReverse](#proxypassreverse)).  
-Note it will require the `proxy_module` and the `proxy_http_module` to be installed for this to work.  
+The `ProxyPreserveHost On` will ensure that the hostname we use will be passed to the service (see [ProxyPreserveHost][proxypreservehost].  
+The `ProxyPass` directive will handle mapping of incoming requests to the destination server: `public.com/foo` becomes `backend.com/foo` (see [ProxyPass][proxypass]).
+The `ProxyPassReverse` directive handles mapping of response requests from the destination server back to the origin server, `backend.com/bar` becomes `public.com/bar` (see [ProxyPassReverse][proxypassreverse]).  
+Note it will require the `proxy_module` and the `proxy_http_module` to be installed as modules in apache for this to work.  
 
 ## Restricting Access
-We use the [location](#location) directive to place restrictions on access to the root of this virtualhost ("/"), we could be more specific but since our ProxyPass and ProxyPassReverse are operating on the root also this should match up:
+We use the [location][location] directive to place restrictions on access to the root of this virtualhost ("/"), we could be more specific but since our ProxyPass and ProxyPassReverse are operating on the root also this should match up:
 ```
 <IfModule proxy_module>
 	...
-    <Location "/">
-    	Require ip 192.168.0.0/24
+	<Location "/">
+		Require ip 192.168.0.0/24
 	</Location>
 </IfModule>
 ``` 
 This will restrict the gateway to only work when the **origin** IP address is from within the address range `192.168.0.0 - 192.168.0.255` on my local network.   
-I am able to use a range thanks to the use of my subnet mask in Classless Inter-Domain Routing format (see [CIDR](#CIDR)), this is the `/24` at the end which indicates that the subnet mask will apply to the first 24 bits of the IP address (in other words a mask of 255.255.255.0), each block of 8-bits in binary is represented by the range 0-255 in decimal and an IP address consists of four of these 8-bit blocks `x.x.x.x`. 
+I am able to use a range like this thanks to the use of a subnet mask in Classless Inter-Domain Routing format (see [CIDR][CIDR]), this is the `/24` at the end which indicates that the subnet mask will apply to the first 24 bits of the IP address (in other words a mask of 255.255.255.0), each block of 8-bits in binary is represented by the range 0-255 in decimal and an IP address consists of four of these 8-bit blocks `x.x.x.x`. 
 So now I have restricted access to only the machines on my local network who are on the `192.168.0.x` subnet.  
 
 ## Local host resolution
@@ -75,7 +75,7 @@ There are still some issues this solution presents:
 2. I still need a hosts file for each machine and will need to update it if I introduce new services/domain names
 3. This solution only works on my local network
 
-These issues not withstanding the solution is extenisble enough should in future I implement a BIND server or add the services to my registered domains I can without having to throw much away:
+These issues not withstanding the solution is extensible enough that should I in future implement a BIND server or add the services to my registered domains I can do so without having to throw much away:
 1. If I want to use DNS (via one of my registered domains) instead of the hosts file I can remove the hosts file, add an A record to the subdomain and a ddclient entry on the apache server to update the A record. No change is required for the virtualhost entry whilst still blocking IP addresses that aren't from my local network. 
 2.  If I want to open a service up to the wider world I can follow the steps above to use DNS and then remove the `Require ip` block from the virtualhost entry. 
 
