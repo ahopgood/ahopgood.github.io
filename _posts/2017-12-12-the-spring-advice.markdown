@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Spring Boot @ControllerAdvice doesn't take its own advice"
-date: 2017-09-25
+date: 2017-12-12
 categories: Spring-boot
 ---
 I recently ran into some puzzling behaviour concerning Spring's [`@ControllerAdvice`][ControllerAdvice] annotations where the `assignableType = {}` value of the annotation wasn't being honoured.
