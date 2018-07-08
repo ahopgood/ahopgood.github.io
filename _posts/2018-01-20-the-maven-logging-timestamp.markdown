@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The maven logging timestamps"
-date: 2018-01-03
+date: 2018-01-20
 categories: maven intellij macos
 ---
 
