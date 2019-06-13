@@ -1,0 +1,51 @@
+---
+layout: post
+title:  "The Hugo Table of Contents"
+date: 2018-09-01
+categories: Hugo, Markdown
+---
+
+## Hugo Table of contents
+Adding a table of contents for a index page in Hugo is fairly straightforward, it will create the table of contents based on the child pages associated with the section (i.e. in the directory of the relevant section).  
+This can be done using the `{{% children %}}` call in the main content of your index page. 
+
+Adding a table of contents based on the headers _within_ the page however is less straightforward as the top level (h1) header for the page is also included which looks odd.  
+Using the [gist here](https://gist.github.com/skyzyx/a796d66f6a124f057f3374eff0b3f99a) you can create the file `toc-ignore-h1.html` in the following directory: `themes/learn/layouts/partials/`.  
+This is the code that will allow for a table of contents to be created that ignores the initial header for the page it is displaying on and selects all other headers to populate the table of contents.  
+
+Update the `themes/learn/layouts/_default/single.html` page to add a clause allowing your table of contents to be displayed if the `toc: true` parameter has been set in the page:  
+```
+{{ if .Params.toc }}
+{{ partial "toc-ignore-h1.html" . }}
+{{ end }}
+```
+An example of this in a template placing the TOC above the content but below the header:  
+```
+{{ partial "header.html" . }}
+
+{{ if .Params.toc }}
+{{ partial "toc-ignore-h1.html" . }}
+{{ end }}
+
+{{ .Content }}
+
+<footer class=" footline" >
+	{{with .Params.LastModifierDisplayName}}
+	    <i class='fa fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a> {{with $.Date}} <i class='fa fa-calendar'></i> {{ .Format "02/01/2006" }}{{end}}
+	    </div>
+	{{end}}
+</footer>
+
+
+{{ partial "footer.html" . }}
+```
+
+To use the table of contents within your page you need to declare it in the front matter:
+```
+---
+title: "My Page"
+identifier: "my-page"
+weight: 1
+toc: true
+---
+```  

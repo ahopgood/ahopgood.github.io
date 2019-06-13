@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "Keeping Directories in git"
+date: 2018-05-26
+categories: git
+---
+
+Sometimes I have a need for a directory structure to be saved to version control (in this case `git`) but either ignoring the contents or leaving them just empty.  
+Content could be missing for various reasons:
+* The directories will contain large files such as package installers which are too large for your SCM provider or they charge for the storage ([git LFS](https://git-lfs.github.com/))
+* Or the directories are used to hold generated files produced as part of your build
+
+A typical use case might be that I want to enforce a standard directory structure for flyway migrations across different environments:  
+```
+flyway/migrations/V20190119_001__create_table.sql
+flyway/dev/permissions/aftermigrate.sql
+flyway/sit/permissions/
+flyway/prod/permissions/
+```
+Although I have a post migration permissions script for the development environment, due to not having shipped to the `sit` or `prod` environments I have no post migrations for those environments yet but will need them in future.  
+
+So what can I do to ensure if someone else wants to add post migration scripts that they know what directory structure to use? 
+When empty directories are present when committing to `git` they aren't accounted for in the change list, only directories with content get recorded.  
+
+The answer lies in a `.gitkeep` file, simply an *empty* file that results in your directory structure being recorded in the git change list.  
+The use of a named file beginning with a period (`.`) is standard convention in Linix/Unix land for storing system files that aren't really to be accessed by users and hence don't appear in directory listings (`ls`) unless specified via `ls -a`.  
+Using an empty file also means we aren't adding a significant size overhead to our repository.  
