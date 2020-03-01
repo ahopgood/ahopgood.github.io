@@ -1,0 +1,70 @@
+---
+layout: post
+title:  "Maven & Java 11"
+date: 2018-09-01
+categories: Maven Java-11
+---
+
+When moving to Java 11 it isn't just your own code that needs to be updated to work with Java 11's modular system.  
+
+Using the [maven-jdeps-plugin][JDEPS] you can check which of your maven dependencies _and_ which parts of your own code use which modules of the JRE:  
+```
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jdeps-plugin</artifactId>
+    <version>3.1.1</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>jdkinternals</goal> <!-- verify main classes -->
+                <goal>test-jdkinternals</goal> <!-- verify test classes -->
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <multiRelease>9</multiRelease>
+        <failOnWarning>true</failOnWarning>
+    </configuration>
+</plugin>
+```   
+
+I encountered the not very informative `Unsupported class file major version 55` error indicating that Java 11 was unsupported by the [maven-dependency-plugin][DEP].    
+
+Except the version I was using was supposedly supported.  
+
+After some digging around I discovered this open issue [MDEP-613][MDEP-613] in the maven shared library bug tracker.  
+It indicated that the [maven-dependency-analyzer][ANALYZER] version used by the dependency plugin didn't support Java 11 and an updated version had not been released yet.  
+
+The solution was to add a specific version (`1.11.1`) of the maven-dependency-analyzer within the maven-dependency-plugin declaration like below, thereby forcing the version to be used:  
+```
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+	<version>3.1.0</version>
+	<executions>
+	    <execution>
+	        <id>analyze</id>
+	        <goals>
+	            <goal>analyze-only</goal>
+	        </goals>
+	        <configuration>
+	            <failOnWarning>false</failOnWarning>
+	            <ignoreNonCompile>true</ignoreNonCompile>
+	        </configuration>
+		</execution>
+	</executions>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-dependency-analyzer</artifactId>
+			<version>1.11.1</version>
+		</dependency>
+	</dependencies>
+</plugin>
+```
+In summary sometimes you will also need to update maven dependencies to work with Java 11 as well, now I finally have maven playing nicely with Java 11!
+
+[JDEPS]:		http://maven.apache.org/plugins/maven-jdeps-plugin/
+[DEP]:			https://maven.apache.org/plugins/maven-dependency-plugin/
+[ANALYZER]:		https://maven.apache.org/shared/maven-dependency-analyzer/    
+[MDEP-613]:		https://issues.apache.org/jira/browse/MDEP-613
