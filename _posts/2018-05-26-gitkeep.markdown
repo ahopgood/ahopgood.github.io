@@ -19,9 +19,9 @@ flyway/prod/permissions/
 ```
 Although I have a post migration permissions script for the development environment, due to not having shipped to the `sit` or `prod` environments I have no post migrations for those environments yet but will need them in future.  
 
-So what can I do to ensure if someone else wants to add post migration scripts that they know what directory structure to use? 
-When empty directories are present when committing to `git` they aren't accounted for in the change list, only directories with content get recorded.  
+So what can I do to ensure if someone else wants to add post migration scripts that they know what directory structure to use?   
+When empty directories are present in a `git` commit they aren't accounted for in the change list, only directories with content get recorded.  
 
 The answer lies in a `.gitkeep` file, simply an *empty* file that results in your directory structure being recorded in the git change list.  
-The use of a named file beginning with a period (`.`) is standard convention in Linix/Unix land for storing system files that aren't really to be accessed by users and hence don't appear in directory listings (`ls`) unless specified via `ls -a`.  
+The use of a named file beginning with a period (`.`) also known as a dotfile is standard convention in Linux/Unix land for storing system files that aren't really to be accessed by users and hence don't appear in directory listings (`ls`) unless specified via `ls -a`.  
 Using an empty file also means we aren't adding a significant size overhead to our repository.  
