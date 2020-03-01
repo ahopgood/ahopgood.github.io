@@ -11,7 +11,7 @@ Recently I was working on a proof of concept where I wanted to work quickly unde
 * I wanted to trial adding two different types of roles:
   * one based on an array of strings
   * and a more complex one based on an array of objects.
-* I wanted it so that I could run a set of tests on each prototype side by side without having to resort to two separate classes.
+* I wanted it so that I could run a set of tests on each prototype side by side without having to modify the base class or duplicate the base class.
 
 A typical lombok builder class declaration is as follows:
 ```
