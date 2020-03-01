@@ -2,7 +2,7 @@
 layout: post
 title:  "The CORS, SRI and CSP Trifecta"
 date: 2018-04-05
-categories: CORS, CRI, CSP
+categories: CORS CRI CSP
 ---
 
 There are three similar sounding security acronyms that you can take advantage of to help secure your websites and services:
