@@ -1,19 +1,19 @@
 ---
 layout: post
-title:  "The Lombok Sub-builers"
+title:  "The Lombok Sub-builders"
 date: 2018-07-07
 categories: Lombok
 ---
 
 ## The issue
-I was working on a proof of concept I wanted to work quickly with:
-* An existing JWT token object that already has the `@Builder` annotation
+Recently I was working on a proof of concept where I wanted to work quickly under the following conditions:
+* I had an existing JWT token class that already had the `@Builder` annotation
 * I wanted to trial adding two different types of roles:
-  * one based on an array of strings and
-  * a more complex one based on an array of objects.
-* I wanted it so that I could run a set of tests on each prototype so simply changing the class itself was unsuitable.
+  * one based on an array of strings
+  * and a more complex one based on an array of objects.
+* I wanted it so that I could run a set of tests on each prototype side by side without having to resort to two separate classes.
 
-Typical lombok builder class declaration:
+A typical lombok builder class declaration is as follows:
 ```
 @Getter
 @ToString
@@ -47,7 +47,7 @@ public class JwtToken {
     }
 }
 ```
-Usage to build an object:
+Using the builder to create an object:
 ```
 JwtToken token = JwtToken.builder()
                 .expiry(expiry)
@@ -59,7 +59,7 @@ JwtToken token = JwtToken.builder()
 
 ## The solution for simple fields
 I needed a sub-builder that would allow for me to continue to use a fluent builder **without** changing the base class whilst also supporting my **new fields**.  
-I chose to _extend_ the class to introduce a new simple field and annotated the _constructor_ with a builder and also specified a _different_ name for the builder method (subbuilder in this case):
+I chose to _extend_ the class to introduce a new simple field and annotated the _constructor_ with a builder and also specified a _different_ name for the builder method (`subbuilder` in this case):
 ```
 @Getter
 @ToString
@@ -81,7 +81,7 @@ static class JwtTokenWithRoles extends JwtToken {
         this.roles = roles;
     }
 ```
-My new builder can now be used via the new builder from the sub class:
+My new field can now be used via the new builder from the sub class:
 ```
 JwtTokenWithRoles token = JwtTokenWithRoles.subbuilder()
         .expiry(expiry)
@@ -93,7 +93,7 @@ JwtTokenWithRoles token = JwtTokenWithRoles.subbuilder()
 ```
 
 ## The solution for objects
-This time I needed to extend with a Role object, again I used a sub builder:
+This time I needed to include an Array of `Role` objects, again I used a sub builder and extended my base class:
 ```
 @Getter
 @ToString
@@ -151,3 +151,7 @@ JwtTokenWithRolesObject token = JwtTokenWithRolesObject.subbuilder()
         })
         .build();
 ```
+## Summary
+I was now able to run my tests with the various role implementations to see their output in json format without having to modify directy the base class and hence breaking any existing tests or code.  
+The use cases for a sub-builder are not common but none-the-less have proven useful.  
+ 
