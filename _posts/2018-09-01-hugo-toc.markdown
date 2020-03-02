@@ -1,0 +1,55 @@
+---
+layout: post
+title:  "The Hugo Table of Contents"
+date: 2018-10-18
+categories: Hugo Markdown
+---
+
+## Hugo Table of contents
+Adding a table of contents for a index page in Hugo is fairly straightforward, it will create the table of contents based on the child pages associated with the section (i.e. in the directory of the relevant section).  
+This can be done using the <code>&#123;&#123; &#37; children &#37; &#125;&#125;</code> call in the main content of your index page. 
+
+Adding a table of contents based on the headers _within_ the page however is less straightforward as the top level (h1) header for the page is also included which looks odd.  
+Using the [gist here](https://gist.github.com/skyzyx/a796d66f6a124f057f3374eff0b3f99a) you can create the file `toc-ignore-h1.html` in the following directory: `themes/learn/layouts/partials/`.  
+This is the code that will allow for a table of contents to be created that ignores the initial header for the page it is displaying on and selects all other headers to populate the table of contents.  
+
+Update the `themes/learn/layouts/_default/single.html` page to add a clause allowing your table of contents to be displayed if the `toc: true` parameter has been set in the page:  
+
+<pre><code>
+&#123;&#123; if .Params.toc  &#125;&#125;
+&#123;&#123; partial "toc-ignore-h1.html" .  &#125;&#125;  
+&#123;&#123; end  &#125;&#125;
+</code></pre>
+
+An example of this in a template placing the TOC above the content but below the header:
+<pre><code>  
+&#123;&#123; partial "header.html" . &#125;&#125;
+
+&#123;&#123; if .Params.toc &#125;&#125;
+&#123;&#123; partial "toc-ignore-h1.html" . &#125;&#125;
+&#123;&#123; end &#125;&#125;
+
+&#123;&#123; .Content &#125;&#125;
+
+&lt;footer class=" footline" &gt;
+	&#123;&#123;with .Params.LastModifierDisplayName&#125;&#125;
+	    &lt;i class='fa fa-user'&gt;&lt;/i&gt; &lt;a href="mailto:&#123;&#123; $.Params.LastModifierEmail &#125;&#125;"&gt;&#123;&#123; . &#125;&#125;&lt;/a&gt; &#123;&#123;with $.Date&#125;&#125; &lt;i class='fa fa-calendar'&gt;&lt;/i&gt; &#123;&#123; .Format "02/01/2006" &#125;&#125;&#123;&#123;end&#125;&#125;
+	    &lt;/div&gt;
+	&#123;&#123;end&#125;&#125;
+&lt;/footer&gt;
+
+
+&#123;&#123; partial "footer.html" . &#125;&#125;
+</code></pre>
+
+To use the table of contents within your page you need to declare it in the front matter:
+```
+---
+title: "My Page"
+identifier: "my-page"
+weight: 1
+toc: true
+---
+```  
+
+Now you have the ability to include a table of contents for your pages.
