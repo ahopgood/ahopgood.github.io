@@ -17,11 +17,10 @@ Below I've detailed some framework specific annotations and their javax counterp
 
 |Spring Annotation|JSR-330 Annotation|What they do|
 |----|----|----|
-|@Autowired|@Inject| Used by dependency injection frameworks to mark an *interface* for injection with an implementation from the current context. Can be set on a setter method or field|
-|@Qualifier|@Named| Used on setter parameters and/or on fields with @Autowired/@Inject to specify a **specific** named implementation to inject |
-|@Component|@Named|  |
-|@Identifier|||
-||||
+| @Autowired | @Inject | Used by dependency injection frameworks to mark an *interface* field for injection with an implementation from the current context. Can be set on a setter method, field or constructor|
+| @Qualifier| @Named | Used on setter parameters and/or on fields with `@Autowired`/`@Inject` to specify a **specific** named implementation to inject from multiple candidates of the same class |
+| @Component | @Named | Can be used on a class level to identify a class or implementation as a named type for wiring against fields injected via `@Inject` and `@Named` or when used without specifying a name is simply used for discovery |
+| @Scope("singleton") | @Singleton | Ensures that the specified class is a [Singleton][Singleton] instance within your application context |
 
 |Hibernate Annotation|Persistence Annotation|What they do|
 |----|----|----|
@@ -49,3 +48,4 @@ The [JSR-339][JSR-339] spec also known as the Java API for RESTful Web Services 
 [JSR-330]:	https://github.com/javax-inject/javax-inject
 [JSR-317]:	https://docs.oracle.com/javaee/7/api/javax/persistence/package-summary.html
 [JSR-339]:	https://jcp.org/en/jsr/detail?id=339
+[Singleton]: 	https://en.wikipedia.org/wiki/Singleton_pattern
