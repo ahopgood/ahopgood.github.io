@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LetEncrypt and the default Apache Host"
+title:  "LetsEncrypt and the default Apache Host"
 date: 2018-12-17
 categories: LetsEncrypt Apache SSL
 ---
