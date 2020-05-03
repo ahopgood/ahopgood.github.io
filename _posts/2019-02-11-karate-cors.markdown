@@ -61,7 +61,7 @@ The real power here is that Karate lets us specify _any_ origin we like, this in
 
 We can structure the tests for preflight behaviour, successful requests and forbidden requests in any way we see fit.  
 
-I will follow up later on how I have chosen to make these tests more repeatable whilst maintaining rich reporting in my [cucumber reports][Cucumber Reports].  
+I will follow up [later](/cors/karate/security/2019/04/21/karate-outline-parameters.html) on how I have chosen to make these tests more repeatable whilst maintaining rich reporting in my [cucumber reports][Cucumber Reports].  
 
 
 [Karate]: https://intuit.github.io/karate/
