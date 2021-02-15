@@ -1,0 +1,32 @@
+---
+layout: post
+title:  "Clashes with Jenkins Plugins"
+date: 2021-05-03
+categories: Jenkins
+---
+
+I recently upgraded a slew of Jenkins plugins all in one go (bad idea I know!) and when it came to running my job pipelines again I encountered many `Invalid parameter` errors.
+
+An example of the stacktrace can be seen below:  
+```
+org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed: WorkflowScript: 16: Invalid parameter "execPattern", did you mean "path"? @ line 16, column 19. execPattern: 'target/jacoco.exec', ^
+
+WorkflowScript: 17: Invalid parameter "classPattern", did you mean "path"? @ line 17, column 19. classPattern: 'target/classes', ^
+
+WorkflowScript: 18: Invalid parameter "sourcePattern", did you mean "path"? @ line 18, column 19. sourcePattern: 'src/main/java', ^
+
+WorkflowScript: 19: Invalid parameter "exclusionPattern", did you mean "path"? @ line 19, column 19. exclusionPattern: 'src/test*' ^
+
+4 errors
+
+at org.codehaus.groovy.control.ErrorCollector.failIfErrors(ErrorCollector.java:310) at org.codehaus.groovy.control.CompilationUnit.applyToPrimaryClassNodes(CompilationUnit.java:1085) at org.codehaus.groovy.control.CompilationUnit.doPhaseOperation(CompilationUnit.java:603) at org.codehaus.groovy.control.CompilationUnit.processPhaseOperations(CompilationUnit.java:581) at org.codehaus.groovy.control.CompilationUnit.compile(CompilationUnit.java:558) at groovy.lang.GroovyClassLoader.doParseClass(GroovyClassLoader.java:298) at groovy.lang.GroovyClassLoader.parseClass(GroovyClassLoader.java:268) at groovy.lang.GroovyShell.parseClass(GroovyShell.java:688) at groovy.lang.GroovyShell.parse(GroovyShell.java:700) at org.jenkinsci.plugins.workflow.cps.CpsGroovyShell.doParse(CpsGroovyShell.java:142) at org.jenkinsci.plugins.workflow.cps.CpsGroovyShell.reparse(CpsGroovyShell.java:127) at org.jenkinsci.plugins.workflow.cps.CpsFlowExecution.parseScript(CpsFlowExecution.java:571) at org.jenkinsci.plugins.workflow.cps.CpsFlowExecution.start(CpsFlowExecution.java:523) at org.jenkinsci.plugins.workflow.job.WorkflowRun.run(WorkflowRun.java:337) at hudson.model.ResourceController.execute(ResourceController.java:97) at hudson.model.Executor.run(Executor.java:427) Finished: FAILURE
+```
+
+The error messages aren't particularly informative but do seem to indicate that the parameters I was setting in the [jacoco reporting](https://plugins.jenkins.io/jacoco/) plugin no longer exist or are invalid for the plugin.  
+
+I suspect it is linked [to this issue - JENKINS-55436](https://issues.jenkins.io/browse/JENKINS-55436) where a plugin that has duplicate named steps to another plugin will prevent the other plugin from parsing correctly.  
+This would make a lot of sense and would present similarly, based on this I concluded another code coverage plugin is probably clashing with Jacoco as they would have similar requirements as far as parameters go; include pattern, exclude pattern etc.
+
+Removing the following plugins solved the issue:
+* [Cobertura](https://plugins.jenkins.io/cobertura/)
+* [Code Coverage API](https://plugins.jenkins.io/code-coverage-api/) which the above plugin relies on.
