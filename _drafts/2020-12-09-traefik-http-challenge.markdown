@@ -12,7 +12,7 @@ In this blog post I'm going to cover an interesting issue I encountered when set
 I am a big proponent of testing and having test environments that are as close to production as possible. This provides a safe space to experiment with new features or configuration and gives you a higher degree of confidence that it will work in production.  
 Not having a viable test environment makes me feel like I'm flying blind and in the long term will result in  outages and a time sink in getting a unique production environment back up.  
 
-To this end I want a traefik test environment and a **big** requirement is the ability to test my TLS/Let's Encrypt set up against the [staging environment](https://letsencrypt.org/docs/staging-environment/) because the production service is rate limited and I don't want to lock out my production services when running configuration tests.   
+To this end I want a traefik test environment and a **big** requirement is the ability to test my TLS/Let's Encrypt set up against their [staging environment](https://letsencrypt.org/docs/staging-environment/) because the production service is rate limited and I don't want to lock out my production services when running configuration tests.   
 
 In order for Let's Encrypt to work you need the following things:
 * Your service needs to be accessible **externally** so that Let's Encrypt can perform challenges (HTTP or TLS) against your service to prove ownership.
@@ -33,17 +33,17 @@ The set up I desire looks like the following:
 
 
 ### The Test Environment - In Practice
-In a previous post I covered how to [Traefik and TLS Passthrough][TLSPassthrough].  
+In a previous post I covered how to set up [Traefik and TLS Passthrough][TLSPassthrough].  
 I thought a similar solution would work for delegating requests to a second traefik instance, I was wrong, oh so wrong.  
 
-In my [dynamic file configuration][traefik-dynamic-file] (virtual-machines.toml) I configured the TCP pass through [**service**][traefik-service] for HTTPS/port `443` access just like for my VM:
+In my [dynamic file configuration][traefik-dynamic-file] (virtual-machines.toml) I configured the TCP pass through [**service**][traefik-services] for HTTPS/port `443` access just like for my VM:
 ```
 [tcp]
     [tcp.services.test-traefik-vm-secure.loadBalancer]
       [[tcp.services.test-traefik-vm-secure.loadBalancer.servers]]
           address = "192.168.xxx.xx:443"
 ```
-I also configured a HTTP pass through [**service**][traefik-service] for HTTP/port `80`, again similarly to my VM:
+I also configured a HTTP pass through [**service**][traefik-services] for HTTP/port `80`, again similarly to my VM:
 ```
 [http]
     [http.services.test-traefik-vm]
@@ -51,7 +51,7 @@ I also configured a HTTP pass through [**service**][traefik-service] for HTTP/po
         [[http.services.test-traefik-vm.loadBalancer.servers]]
           url = "http://192.168.xxx.xxx:80"
 ```
-Unlike my VM I chose to use _docker labels_ to create a [router][traefik-router] on the traefik instance so I could take advantage of environmental variable substitution, thereby enabling me to use the **same** docker-compose file for both testing and production:
+Unlike my VM I chose to use _docker labels_ to create a [**router**][traefik-router] on the traefik instance so I could take advantage of environmental variable substitution, thereby enabling me to use the **same** docker-compose file for both testing and production:
 ```
 - "traefik.http.routers.test-traefik-vm.rule=HostRegexp(`{wildcard:.+}.${TRAEFIK_TEST_DOMAIN}mydomain.com`)"
 - "traefik.http.routers.test-traefik-vm.service=test-traefik-vm@file"
@@ -61,10 +61,10 @@ Unlike my VM I chose to use _docker labels_ to create a [router][traefik-router]
 - "traefik.tcp.routers.test-traefik-vm-secure-tcp.entrypoints=secure,web"
 - "traefik.tcp.routers.test-traefik-vm-secure-tcp.tls.passthrough=true"
 ```
-In the test environment the pass through sub-domain doesn't go anywhere as it is an empty value, in production it goes to my configured `*.test.mydomain.com`.  
+In the test environment the pass through sub-domain variable (`TRAEFIK_TEST_DOMAIN`) doesn't go anywhere as it is an empty value, in production it goes to my configured `*.test.mydomain.com`.  
 Note here that for the HTTP router, we can use a wildcard but for the HTTPS one we need to **explicitly** state the subdomains via the `HostSNI` declaration, this means we need to add an entry for **every new service** we wish to test with HTTPS.  
 This is not ideal but I could not find a better solution.  
-A keypart here is to use the `tls.passthrough=true`.  
+Again a keypart here is to use the `tls.passthrough=true` to make sure that Traefik doesn't intercept and terminate TLS requests.  
 
 So far so good, I rolled out the configuration to production, my certificate resolver was configured to use the HTTP challenge:
 ```
@@ -84,34 +84,39 @@ Inspecting the traefik logs from the test instance showed the HTTP challenge was
 time="2020-07-16T18:58:12Z" level=error msg="Unable to obtain ACME certificate for domains \"service1.test.mydomain.com\": 
 unable to generate a certificate for the domains [service1.test.mydomain.com]: 
 acme: Error -> One or more domains had a problem:[service1.test.mydomain.com] 
-acme: error: 403 :: urn:ietf:params:acme:error:unauthorized :: Invalid response from http://service1.test.mydomain.com/.well-known/acme-challenge/ckPUVZloEKoA1kBf6eoEoKfqQy9WxCSuOs2MK23ulmA [xxx.xxx.xxx.xxx]: 404, url: 
+acme: error: 403 :: urn:ietf:params:acme:error:unauthorized :: Invalid response from http://service1.test.mydomain.com/.well-known/acme-challenge/ckPU....ulmA [xxx.xxx.xxx.xxx]: 404, url: 
 "providerName=myletsencryptresolver.acme routerName=service1 rule="Host(`service1.test.mydomain.com`)"
 </code></pre>
 
 The traefik logs on my production instance also showed an issue with the HTTP challenge:
 <pre><code>
 time="2020-07-16T18:48:53Z" level=error msg="Error getting challenge for token retrying in 25.075435899s" providerName=myletsencryptresolver.acme
-time="2020-07-16T18:48:59Z" level=error msg="Cannot retrieve the ACME challenge for token eHDDehqDesaa3VhwRzmxres-L9Sa0_bns2HRlWw-k2w: cannot find challenge for token eHDDehqDesaa3VhwRzmxres-L9Sa0_bns2HRlWw-k2w" providerName=myletsencryptresolver.acme
+time="2020-07-16T18:48:59Z" level=error msg="Cannot retrieve the ACME challenge for token ckPU....ulmA: cannot find challenge for token ckPU....ulmA" providerName=myletsencryptresolver.acme
 </code></pre>
 
-The test logs show that the Let's Encrypt client has setup the challenge token on my test server and Let's Encrypt's service is reporting an error when looking for that challenge on my test domain.  
+The test logs show that the Let's Encrypt client has set up the challenge token on my test server and Let's Encrypt's service is reporting an error when looking for that challenge response on my test domain.  
 The production logs show the **production** traefik instance is servicing a request to try find to find the challenge which naturally it cannot find because the challenge is on my test server.  
 It seems that the external inbound request to verify the challenge is being intercepted/serviced by the production instance when the challenge can in fact be found on the test instance.  
 
-DIAGRAM HERE? 
+![diagram-traefik-test-environment-challenge.svg](/assets/diagram-traefik-test-environment-challenge.svg)
 
 
 ### Fixing the Let's Encrypt Challenge
 
-Looking into the code for the [Traefik http challenge](https://github.com/containous/traefik/blob/e9d0a16a3bb6397ee329b1825902bd700f7c1a5d/pkg/provider/acme/challenge_http.go) and the [ACME http challenge](https://github.com/go-acme/lego/blob/master/challenge/http01/http_challenge.go)
+Looking into the code for the [Traefik http challenge](https://github.com/traefik/traefik/blob/e9d0a16a3bb6397ee329b1825902bd700f7c1a5d/pkg/provider/acme/challenge_http.go#L39) at line `39` I can see that enabling the `http` challenge creates a Router.  
+Further down at line `44` again in the [Traefik http challenge](https://github.com/traefik/traefik/blob/e9d0a16a3bb6397ee329b1825902bd700f7c1a5d/pkg/provider/acme/challenge_http.go#L44) we see that under the `MethodGet` section the path is mapped to `ChallengePath` from the [acme-go library](https://github.com/go-acme/lego/blob/master/challenge/http01/http_challenge.go#L15) which returns `/.well-known/acme-challenge/`.  
 
-* [HTTP entrypoint](https://github.com/containous/traefik/blob/e9d0a16a3bb6397ee329b1825902bd700f7c1a5d/pkg/provider/acme/provider.go#L76)
-* [Someone with a similar issue](https://community.containo.us/t/running-custom-http-challenge-controller-in-traefik-well-known/4383)
+So it seems that a default router is being constructed to intercept `/.well-known/acme-challenge/` urls and because this router isn't associated with a host it applies for all incoming requests regardless of whether we add a more specific router for the `mydomain.com/.well-known/acme-challenge/` path.  
 
-Switching to the `tls` challenge resolved the issue, I can now issue challenges within the test instance and have them passthrough the production instance to resolve in the test instance. 
+I soon discovered [someone else with a similar issue](https://community.containo.us/t/running-custom-http-challenge-controller-in-traefik-well-known/4383) involving the HTTP challenge being intercepted so I suspected there wasn't much I could do about this via the configuration for the `http` challenge.   
 
-* Add detail that `/.well-known/acme-challenge/` urls are being intercepted by a default traefik router even if you specify your own router
+Switching from the `http` challenge to the `tls` challenge resolved the issue, I can now issue challenges within the test instance and have them pass through the production instance to resolve in the test instance! 
 
+## Summary
+* Traefik has a default router that will match the `/.well-known` namespace
+* This router will take priority over any router you use as it isn't bound to a specific host.
+* Use the `tls` challenge type when passing through Let's Encrypt requests to another Traefik instance
+* I need to add a new `HostSNI` entry in the TCP router for every new test service as it doesn't support wildcards.
 
 
 [TLSPassthrough]: /traefik/letsencrypt/2020/07/18/traefik-tls-passthrough
