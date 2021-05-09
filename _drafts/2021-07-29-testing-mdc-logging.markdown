@@ -16,12 +16,6 @@ Good examples of information you might want to add are:
 ## Adding to the MDC
 MDC identifiers can be added at **any** point in a request's lifecycle through a system, I wanted a way to verify that the correct information was being added at the points I expected.  
 
-
-Sadly cannot seem to do this via Log4J.  
-Requires a Logback Logger, ListAppender and ILoggingEvent classes.
-Can then inspect events on the list by their position integer.
-Downside is it requires relying on a concrete logging framework instead of SLF4J.  
-
 MDC values are stored in a map, they are added via static calls on the `MDC` object.  
 In my example I am adding to the context in two places via a [HandlerInterceptorAdapter][HandlerInterceptorAdapter]:
 1. **Before** the request is processed by my application code via the `preHandle` method.
@@ -51,7 +45,6 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter {
         MDC.put(REQUEST_ID, Optional.ofNullable(request.getHeader(X_REQUEST_ID_HEADER)).orElse(UUID.randomUUID().toString()));
         MDC.put(HTTP_METHOD, request.getMethod());
         MDC.put(HTTP_URL, request.getRequestURI());
-        MDC.put(HTTP_URL_PATH, request.getRequestURI());
         LOGGER.info(sanitise(String.format("Request received [%s] [%s]", request.getMethod(), request.getServletPath()));
         return true;
     }
@@ -65,12 +58,12 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter {
     }
 }
 ```
-This produces the following log output respectively:
-> [request-id=, http-method=, http-url=] some log message
+This produces the following log output respectively when using a logstash encoder with the MDC values added to the appender pattern, the MDC values can be seen at the end:
+> {"@timestamp":"2021-05-04T15:34:16.546Z","@version":"1","message":"Request received [PUT] [product-type]","logger_name":"...interceptor.LoggingInterceptor","thread_name":"http-nio-8080-exec-10","level":"INFO","level_value":20000,"http.request_id":"494be0d7-2a6c-4f29-860d-9c0966342fb2","http.url":"/product-type","http.method":"PUT"}
 
 and   
 
-> [request-id=, http-method=, http-url=, http-status-code] somelog message
+> {"@timestamp":"2021-05-04T15:34:16.571Z","@version":"1","message":"Returning response status code [200]","logger_name":"...interceptor.LoggingInterceptor","thread_name":"http-nio-8080-exec-10","level":"INFO","level_value":20000,"http.request_id":"494be0d7-2a6c-4f29-860d-9c0966342fb2","http.url":"product-type","http.status_code":"200","http.method":"PUT"}
 
 You should note the `MDC.clear()` call at the beginning and end, this ensures the context is **clean** before the next incoming request.  
 
@@ -132,8 +125,7 @@ void testPreHandleMDCValues() {
     assertThat(mdcMap).containsOnly (
             Map.entry(REQUEST_ID, OUR_ID),
             Map.entry(HTTP_METHOD, HttpMethod.GET.name()),
-            Map.entry(HTTP_URL, DILBERT_ADDRESS),
-            Map.entry(HTTP_URL_PATH, DILBERT_ADDRESS)
+            Map.entry(HTTP_URL, DILBERT_ADDRESS)
     );
 }
 ```
@@ -163,7 +155,6 @@ void testCumulativeMDCValues() {
             Map.entry(REQUEST_ID, OUR_ID),
             Map.entry(HTTP_METHOD, HttpMethod.GET.name()),
             Map.entry(HTTP_URL, DILBERT_ADDRESS),
-            Map.entry(HTTP_URL_PATH, DILBERT_ADDRESS),
             Map.entry(HTTP_STATUS_CODE, "" + HttpStatus.OK.value())
     );
 }
@@ -220,7 +211,6 @@ class LoggingInterceptorTest {
                 Map.entry(REQUEST_ID, OUR_ID),
                 Map.entry(HTTP_METHOD, HttpMethod.GET.name()),
                 Map.entry(HTTP_URL, DILBERT_ADDRESS),
-                Map.entry(HTTP_URL_PATH, DILBERT_ADDRESS)
         );
     }
 
@@ -246,7 +236,6 @@ class LoggingInterceptorTest {
                 Map.entry(REQUEST_ID, OUR_ID),
                 Map.entry(HTTP_METHOD, HttpMethod.GET.name()),
                 Map.entry(HTTP_URL, DILBERT_ADDRESS),
-                Map.entry(HTTP_URL_PATH, DILBERT_ADDRESS),
                 Map.entry(HTTP_STATUS_CODE, "" + HttpStatus.OK.value())
         );
     }
