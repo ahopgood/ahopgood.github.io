@@ -5,9 +5,9 @@ date: 2017-04-20
 categories: Java Hibernate Annotations
 ---
 
-The Spring and Hibernate frameworks both provide annotations to help with dependency injection and database persistence respectively. The idea of using annotations is that you don't spoil your Java beans with framework specific code, instead your Java bean remains just so with only getters and setters for the fields that it encapsulates. 
+The Spring and Hibernate frameworks both provide annotations to help with dependency injection and database persistence respectively. The idea of using annotations is that you don't spoil your Java beans with framework specific code, instead your Java bean remains just so with only getters and setters for the fields that it encapsulates.
 
-This is generally a "good thing" except you are pushing the problem to the periphery, now you have **framework specific** annotations all over your Java beans which inhibit you moving to other frameworks. 
+This is generally a "good thing" except you are pushing the problem to the periphery, now you have **framework specific** annotations all over your Java beans which inhibit you moving to other frameworks.
 
 The [JSR-330][JSR-330] specification (a.k.a. javax-inject) provides a solution in the form of standardised cross-framework annotations. Now you can switch between DI frameworks without having to rewrite any of your beans; Spring to Guice and vice versa.  
 
@@ -44,8 +44,10 @@ The [JSR-339][JSR-339] spec also known as the Java API for RESTful Web Services 
 |@RequestParam|@QueryParam|Allow the method parameter to be used in a GET request as a parameter, allows for optional name mapping ("") so the method parameter can be named differently to the query parameter|
 |-|@PathParam|-|
 
+* [JSR-303][JSR-303] Bean Validation spec
 
 [JSR-330]:	https://github.com/javax-inject/javax-inject
 [JSR-317]:	https://docs.oracle.com/javaee/7/api/javax/persistence/package-summary.html
 [JSR-339]:	https://jcp.org/en/jsr/detail?id=339
+[JSR-303]:  https://beanvalidation.org/1.0/spec/
 [Singleton]: 	https://en.wikipedia.org/wiki/Singleton_pattern

@@ -2,7 +2,7 @@
 layout: post
 title:  "Springfox Swagger"
 date: 2022-02-01
-categories: Spring Swagger API
+categories: spring swagger API
 ---
 There have been a few use cases in Springfox Swagger that I've found to be not-so-obvious to achieve and this was despite me knowing the outcome I was aiming for, so I'm popping down some notes here for future reference and to help anyone else:
 * Headers - hiding a header 

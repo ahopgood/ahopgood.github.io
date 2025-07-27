@@ -2,7 +2,7 @@
 layout: post
 title:  "Karate Scenario Outline with Parameters"
 date: 2019-04-21
-categories: CORS Karate Security
+categories: Karate Security
 ---
 
 One of the drawbacks of using a [`Scenario Outline`][Scenario Outline] is that the values in the `Examples` table cannot be constructed via variables. An example would be when one of your table columns contains an endpoint and you want to source the base path from a variable allowing you to change the IP address and port in a single place for all tests.  
