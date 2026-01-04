@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Live reloading websites with Golang"
-date: 2025-0
+date: 2025-01-01
 categories: golang
 ---
 I recently started a new hobby project to put my learnings around Golang web applications to practical use.  

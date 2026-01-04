@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Increasing Vagrant disk sizes on Ubuntu"
-date: 2026-0
+date: 2026-01-04
 categories: vagrant virtualbox ubuntu
 ---
 

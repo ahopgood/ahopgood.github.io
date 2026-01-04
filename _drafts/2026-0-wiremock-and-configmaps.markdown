@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Wiremock and the Kubernetes ConfigMaps"
-date: 2025-0
+date: 2025-01-01
 categories: wiremock k8s
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Writing a Lutris script to auto-install on GOG"
-date: 2025-0
+date: 2025-01-01
 categories: lutris
 ---
 

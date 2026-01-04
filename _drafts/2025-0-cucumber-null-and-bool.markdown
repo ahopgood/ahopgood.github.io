@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Cucumber with null and boolean values"
-date: 2025-0
+date: 2025-01-01
 categories: cucumber
 ---
 * Recently I was working with Cucumber and needed to assert on some value held in a database.

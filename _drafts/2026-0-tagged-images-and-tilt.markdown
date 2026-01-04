@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Using tagged images with Tilt, Kustomize and Kubernetes"
-date: 2025-0
+date: 2025-01-01
 categories: k8s tilt kustomize
 ---
 

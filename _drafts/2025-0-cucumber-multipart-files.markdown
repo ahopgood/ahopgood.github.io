@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Cucumber with Multipart File uploads"
-date: 2025-0
+date: 2025-01-01
 categories: cucumber spring
 ---
 Recently I had to test an API contract involving a [Multipart File form submission](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST#multipart_form_submission).  
