@@ -7,6 +7,10 @@ FROM ruby:3.4.1-alpine3.21
 RUN apk update
 RUN apk add --no-cache build-base gcc cmake git
 
+#FROM ubuntu:22.04
+#RUN apt update && apt install ruby-full=3.4.1 -y
+#RUN ruby -version
+
 # Update the Ruby bundler and install Jekyll
 #RUN gem update bundler && gem install bundler jekyll
 
@@ -30,7 +34,6 @@ RUN gem install jekyll -v 4.4.1
 COPY Gemfile .
 RUN bundle install
 EXPOSE 4000
-RUN echo "TEST"
 RUN mkdir /srv/jekyll
-CMD ls -l /srv/jekyll && bundle exec jekyll serve -s /srv/jekyll --host 0.0.0.0
-#CMD bundle exec jekyll serve
+COPY entrypoint.sh .
+ENTRYPOINT ./entrypoint.sh

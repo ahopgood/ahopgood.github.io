@@ -4,7 +4,9 @@ services:
       context: .
     image: jekyll-local:latest
     pull_policy: build
+    environment:
+      - FUTURE=true
     ports:
-     - "4000:4000"
+      - "4000:4000"
     volumes:
-      - ${PWD}:/srv/jekyll
+      - .:/srv/jekyll

@@ -41,7 +41,26 @@ case $1 in
 esac
 ```
 
-## Local Install
+## Building docker image
+### Development with docker-compose
+```
+vagrant up
+cd /vagrant
+sudo docker-compose up -d --build
+```
+* The blog will be available on [http://localhost:4000](http://localhost:4000)
+### Docker build
+```
+sudo docker build -t jekyll-blog:latest .
+```
+
+### Environmental variables
+Taken from the [Command line usage options - build](https://jekyllrb.com/docs/configuration/options/#build-command-options) docs:
+* `--force_polling` to force Jekyll to use polling for file changes, this is useful when running in a container or on a network drive where inotify events may not work properly
+* `--future true` to include posts with a future date
+* `--drafts true` to include draft posts from the `_drafts` directory
+
+## Local Jekyll Install
 * `mise use ruby@3.4.1`
 * `gem install jekyll -v 4.4.1`
 ```
