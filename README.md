@@ -1,52 +1,9 @@
-Local development:
-```
-export JEKYLL_VERSION=4.4.1
-docker run --rm \
-    --volume="$PWD:/srv/jekyll" \
-    -it jekyll/jekyll:$JEKYLL_VERSION \
-    jekyll build
-```
-
-## Puppet version
-* ruby 3.4.0
-```
-gem install jekyll github-pages
-```
-* bundle exec jekyll serve
-### Control script
-```
-#!/usr/bin/env bash
-
-start() {
-  echo "Starting Jekyll..."
-  jekyll serve --host <%= @blog_host_address %> -s <%= @blog_source_directory %> -d <%= @blog_output_directory %> --watch <%= @drafts %> <%= @future %> --force_polling
-}
-
-stop() {
-  echo "Stopping Jekyll..."
-  echo "Found jekyll pids: "$(/bin/ps -aux | /bin/grep jekyll | /bin/grep -v grep | /usr/bin/awk '{ print $2 }' )
-  /bin/ps -aux | /bin/grep jekyll | /bin/grep -v grep | /usr/bin/awk '{ print $2 }' | xargs kill
-  exit 0
-}
-
-status() {
-  echo "status"
-  JEKYLL_IDS=$(ps -aux | grep jekyll | grep -v grep | awk '{ print $2 }')
-  echo "Found jekyll pids: $JEKYLL_IDS"
-}
-
-case $1 in
-  start) "$1";;
-  stop|status) "$1" ;;
-esac
-```
-
 ## Building docker image
 ### Development with docker-compose
 ```
 vagrant up
 cd /vagrant
-sudo docker-compose up -d --build
+sudo docker-compose up --build
 ```
 * The blog will be available on [http://localhost:4000](http://localhost:4000)
 ### Docker build
@@ -56,9 +13,14 @@ sudo docker build -t jekyll-blog:latest .
 
 ### Environmental variables
 Taken from the [Command line usage options - build](https://jekyllrb.com/docs/configuration/options/#build-command-options) docs:
-* `--force_polling` to force Jekyll to use polling for file changes, this is useful when running in a container or on a network drive where inotify events may not work properly
-* `--future true` to include posts with a future date
-* `--drafts true` to include draft posts from the `_drafts` directory
+
+| Environment variable | Description                                                                                                                                                                | Jekyll CLI option |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| FUTURE               | to include posts with a future date                                                                                                                                        | `--future`        |
+| DRAFT                | to include draft posts from the `_drafts` directory                                                                                                                        | `--draft`         | 
+| WATCH                | to enable auto-regeneration of the site when files are modified                                                                                                            | `--watch`         |
+| FORCE_POLLING        | to force Jekyll's watch to use polling for file changes, this is useful when running in a shared VM drive or on a network drive where inotify events may not work properly | `--force_polling` | 
+
 
 ## Local Jekyll Install
 * `mise use ruby@3.4.1`
