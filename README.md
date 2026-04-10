@@ -3,7 +3,7 @@
 ```
 vagrant up
 cd /vagrant
-sudo docker-compose up --build
+sudo docker compose up --build
 ```
 * The blog will be available on [http://localhost:4000](http://localhost:4000)
 ### Docker build

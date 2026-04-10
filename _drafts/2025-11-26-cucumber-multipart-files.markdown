@@ -1,21 +1,32 @@
 ---
 layout: post
 title:  "Cucumber with Multipart File uploads"
-date: 2025-01-01
+date: 2025-11-26
 categories: cucumber spring
 ---
 Recently I had to test an API contract involving a [Multipart File form submission](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST#multipart_form_submission).  
-The testing framework of choice in this case was [Cucumber](https://cucumber.io/docs/installation/java/).  
+The testing framework of choice in this case was [Cucumber](https://cucumber.io/docs/installation/java/).
 
-
+## Multipart Formdata
+For some background I had to refresh my memory of what a Multipart form body looks like when it is constructed, for this I went to Mozilla's excellent [developer docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST#multipart_form_submission).  
+Each file uploaded requires:
+* A `Content-Disposition` header with the following fields (see [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Disposition#as_a_header_for_a_multipart_body) for more info):
+	* `formdata;`
+	* `name=<parameter_name>`
+	* `filename=<filename>`
+	* e.g `Content-Disposition: formdata; name=myxml; filename=myxml.xml`
+* A `Content-Type` header for your file content type e.g. `application/json` or `application/xml`
+ 
 ## Cucumber test background
-* We have a context that is a ThreadLocal declared like so:
+* Our test fixtures have a "context" that is a ThreadLocal declared like so:
 ```
 public static final ThreadLocal<TestContext> context = ThreadLocal.withInitial(TestContext::new);
 ```
-* This uses the class `TestContext` to hold any test fixtures between our `@Given`, `@When` and `@Then` steps.  
-* The TestContext is a lombok'd class for holding data
-* To this I added the `formData` field in the form of a MultiValueMap which is keyed on string values and holds objects. 
+* This uses the class `TestContext` to hold any test fixtures between our `@Given`, `@When` and `@Then` steps so we can share context.  
+  * The TestContext is a lombok'd class for holding data with the `@Data` annotation.
+* To this I added the `formData` field in the form of a MultiValueMap which is keyed on string values and holds objects.
+  * This represents the `key=value` pairs that is the main payload of our form data
+
 ```
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,22 +58,10 @@ public class TestContext {
 }
 ```
 
-## Multipart Formdata
-* For some background I had to refresh my memory of what a Multipart form body looks like when it is constructed:
-* https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST#multipart_form_submission
-* Each file uploaded requires:
-	* `Content-Disposition` header with the following fields (see [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Disposition#as_a_header_for_a_multipart_body) for more info):
-		* `formdata;`
-		* `name=<parameter_name>'`
-		* `filename=<filename>`
-		* e.g `Content-Disposition: formdata; name=myxml; filename=myxml.xml`
-	* `Content-Type` header for your file content type e.g. `application/json` or `application/xml`
-	* In the form data we need the file bytes need to be set under the `<parameter_name>`
-
 ## Using Spring's MockMultipartFile
 To put this together we used Spring's [MockMultipartFile](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/mock/web/MockMultipartFile.html) to hold file information.
 
-The steps to combine this into a request are:
+The steps to combine this into a request we can use in our Cucumber steps are:
 1. Retrieve our existing form data from our context, this represents the `body` of the form we're going to be submitting.
 2. Construct the `MockMultipartFile` with our filename, parameter name, content-type and fileContent.
 3. Create the headers for our file upload
@@ -70,10 +69,10 @@ The steps to combine this into a request are:
       1. `name` is the parameter name we're storing the file under
       2. `filename` is the original name of the file prior to upload   
    2. `Content-Type` to describe the content type of our file.
-4. Finally we add everything as a Spring HttpEntity to the form data under our parameter name (same as our `name` in the content disposition header)
+4. Finally, we add the form content as a Spring HttpEntity to the form data map under our parameter name (same as our `name` in the content disposition header)
    1. Both our headers are added as a HttpHeaders instance
    2. The file contents are added as the `body` of the entity by retrieving the bytes from our `MockMultipartFile` 
-5. We then put the form data back into our context to be used by our [RestTemplate](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html)
+5. We then put the form data **back** into our context to be used by our [RestTemplate](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html) later on.
 
 The full declared step looks as follows:
 ```
