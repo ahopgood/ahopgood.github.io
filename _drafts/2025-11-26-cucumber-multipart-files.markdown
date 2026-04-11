@@ -6,6 +6,11 @@ categories: cucumber spring
 ---
 Recently I had to test an API contract involving a [Multipart File form submission](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST#multipart_form_submission).  
 The testing framework of choice in this case was [Cucumber](https://cucumber.io/docs/installation/java/).
+I wanted to create two steps:
+1. A step to set the file content and metadata in the form data
+   * `@And("the Multipart File: {string} with name: {string} and content: {string}")`
+2. A step to submit the form data to the API endpoint
+   * `@Then("the Multipart File is submitted to the API")` 
 
 ## Multipart Formdata
 For some background I had to refresh my memory of what a Multipart form body looks like when it is constructed, for this I went to Mozilla's excellent [developer docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST#multipart_form_submission).  
