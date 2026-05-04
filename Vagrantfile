@@ -69,27 +69,29 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  config.ssh.private_key_path = "~/.vagrant.d/20170926_vagrant_private_key"
+  config.vm.box = "reclusive/jammy64-docker"
+  config.vm.box_version = "0.0.2026-04-11-1347"
+  config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key","~/.vagrant.d/20170926_vagrant_private_key"]
 
   config.vm.boot_timeout = 600
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-      #cd /vagrant && sudo docker-compose up -d --build
-      # Taken from https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
-      # Add Docker's official GPG key:
-      sudo apt update && \
-        sudo apt install ca-certificates curl -y && \
-        sudo install -m 0755 -d /etc/apt/keyrings && \
-        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
-        sudo chmod a+r /etc/apt/keyrings/docker.asc
-      # Add the repository to Apt sources:
-      cp /vagrant/docker.sources /etc/apt/sources.list.d/docker.sources
-        
-      sudo apt update && \
-        sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y && \
-        sudo usermod -aG docker $USER && \
-        sudo systemctl start docker
-  SHELL
+  # config.vm.provision "shell", inline: <<-SHELL
+  #     #cd /vagrant && sudo docker-compose up -d --build
+  #     # Taken from https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+  #     # Add Docker's official GPG key:
+  #     sudo apt update && \
+  #       sudo apt install ca-certificates curl -y && \
+  #       sudo install -m 0755 -d /etc/apt/keyrings && \
+  #       sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
+  #       sudo chmod a+r /etc/apt/keyrings/docker.asc
+  #     # Add the repository to Apt sources:
+  #     cp /vagrant/docker.sources /etc/apt/sources.list.d/docker.sources
+  #
+  #     sudo apt update && \
+  #       sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y && \
+  #       sudo usermod -aG docker $USER && \
+  #       sudo systemctl start docker
+  # SHELL
 end
