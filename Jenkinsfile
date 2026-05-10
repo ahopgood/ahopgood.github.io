@@ -32,7 +32,7 @@ pipeline {
         } //End Vulnerability Scan Stage
         stage ('Push Docker Image to Prod Registry') {
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
