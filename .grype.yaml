@@ -1,0 +1,5 @@
+fail-on-severity: '' #critical, high, medium, low, negligible
+ignore: #Show only fixed
+  - fix-state: not-fixed
+  - fix-state: wont-fix
+  - fix-state: unknown
