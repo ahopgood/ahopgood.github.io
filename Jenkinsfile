@@ -46,11 +46,11 @@ pipeline {
                         echo "Docker registry: ${DOCKER_REGISTRY}"
 
                         echo ${PASSWORD} | docker login --username ${USERNAME} --password-stdin  https://${DOCKER_REGISTRY}
-                        docker tag ${IMAGE_NAME}:${VERSION} ${DOCKER_REGISTRY}/${NAMESPACE}${IMAGE_NAME}:${VERSION}
-                        docker tag ${IMAGE_NAME}:${VERSION} ${DOCKER_REGISTRY}/${NAMESPACE}${IMAGE_NAME}:latest
+                        docker tag ${IMAGE_NAME}:${VERSION} ${DOCKER_REGISTRY}${NAMESPACE}${IMAGE_NAME}:${VERSION}
+                        docker tag ${IMAGE_NAME}:${VERSION} ${DOCKER_REGISTRY}${NAMESPACE}${IMAGE_NAME}:latest
 
-                        docker push ${DOCKER_REGISTRY}/${NAMESPACE}${IMAGE_NAME}:${VERSION}
-                        docker push ${DOCKER_REGISTRY}/${NAMESPACE}${IMAGE_NAME}:latest
+                        docker push ${DOCKER_REGISTRY}${NAMESPACE}${IMAGE_NAME}:${VERSION}
+                        docker push ${DOCKER_REGISTRY}${NAMESPACE}${IMAGE_NAME}:latest
                         docker logout https://${DOCKER_REGISTRY}
                     '''
                 } //End credentials block
