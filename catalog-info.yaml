@@ -3,6 +3,8 @@ kind: Component
 metadata:
   name: blog.alexanderhopgood.com
   description: Alex's ramblings via a github pages app
+  annotations:
+    github.com/project-slug: ahopgood/ahopgood.github.io
 spec:
   type: website
   lifecycle: production
