@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: blog.alexanderhopgood.com
+  description: Alex's ramblings via a github pages app
+spec:
+  type: website
+  lifecycle: production
+  owner: alexcorp
