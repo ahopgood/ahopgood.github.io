@@ -25,9 +25,9 @@ Our staff engineer was adamant that we should be using tagged images pulled from
 Okay then, challenge accepted...
 
 ## Existing flow
-1. Do a docker build of the local resources with source code provided either via local code or via a git extension checkout of a branch/tag (via `docker_build()`) 
-2. Apply kustomize to generate our k8s manifests (via `kustomize()`)
-3. Deploy this to our local kubernetes context (via `k8s_yaml()`)
+1. Do a docker build of the local resources with source code provided either via local code or via a git extension checkout of a branch/tag (via [`docker_build()`](https://docs.tilt.dev/api.html#api.docker_build)) 
+2. Apply kustomize to generate our k8s manifests (via [`kustomize()`](https://docs.tilt.dev/api.html#api.kustomize)
+3. Deploy this to our local kubernetes context (via [`k8s_yaml()`](https://docs.tilt.dev/api.html#api.k8s_yaml))
 ```
 docker_build("blah.dkr.ecr.eu-west-1.amazonaws.com/my-svc", ".", ignore=['docs', 'config'])
 k8s_yaml(kustomize('.infra/k8s/overlays/local'))
